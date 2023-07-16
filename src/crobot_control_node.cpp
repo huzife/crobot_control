@@ -3,14 +3,21 @@
 #include "com_control/controller.h"
 #include "com_control/controller_callbacks.h"
 #include <functional>
+#include <iostream>
 
 class CB : public crobot::ControllerCallbacks {
 public:
     void setSpeedCallback() override {}
 
     void getSpeedCallback(const crobot::GetSpeedResp &resp) override {
-
+        std::cout << "linear_x: " << resp.linear_x << ' '
+                  << "angular_z: " << resp.angular_z << std::endl;
     }
+
+    void getTempAndHumCallback(const crobot::GetTempAndHumResp &resp) override {
+        std::cout << "temperature: " << resp.temperature << ' '
+                  << "humidity: " << resp.humidity << std::endl;
+    } 
 };
 
 class Test {
@@ -49,9 +56,17 @@ int main(int argc, char *argv[]) {
         std::bind(&Test::twistSubscribeCB, &t, std::placeholders::_1));
 
     ros::Rate rate(10);
+    int i = 0;
 
     while (true) {
         rate.sleep();
+
+        i++;
+        if (i == 10) {
+            t.controller.getSpeed();
+            t.controller.getTempAndHum();
+            i = 0;
+        }
 
         ros::spinOnce();
     }

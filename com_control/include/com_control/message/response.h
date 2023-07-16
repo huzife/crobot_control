@@ -13,6 +13,12 @@ public:
 	float angular_z;
 };
 
+class GetTempAndHumResp {
+public:
+	float temperature;
+	float humidity;
+};
+
 class Response {
 private:
 	MessageType type;
@@ -23,6 +29,7 @@ public:
 	bool parse();
 	MessageType getType();
 	GetSpeedResp get_GetSpeedResp();
+	GetTempAndHumResp get_GetTempAndHumResp();
 };
 
 } // namespace crobot

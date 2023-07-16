@@ -20,7 +20,8 @@ void Controller::init(const char *port_name,
 }
 
 void Controller::open() {
-	sp.open();
+	if (sp.open()) std::cout << "Serial opened" << std::endl;
+	else std::cout << "Failed to open serial" << std::endl;
 	sp.connectReadEvent(&listener);
 }
 
@@ -37,6 +38,7 @@ void Controller::processData(std::vector<uint8_t> data, uint32_t len) {
 	case MessageType::NONE: break;
 	case MessageType::SET_SPEED: callbacks.setSpeedCallback(); break;
 	case MessageType::GET_SPEED: callbacks.getSpeedCallback(resp.get_GetSpeedResp()); break;
+	case MessageType::GET_TEMP_AND_HUM: callbacks.getTempAndHumCallback(resp.get_GetTempAndHumResp()); break;
 	}
 }
 
@@ -51,6 +53,11 @@ void Controller::setSpeed(const SetSpeedReq &speed_req) {
 
 void Controller::getSpeed() {
 	Request req(MessageType::GET_SPEED);
+	write(req.getData());
+}
+
+void Controller::getTempAndHum() {
+	Request req(MessageType::GET_TEMP_AND_HUM);
 	write(req.getData());
 }
 

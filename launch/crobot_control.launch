@@ -1,0 +1,3 @@
+<launch>
+    <node pkg="crobot_control" type="crobot_control" name="crobot_control" output="screen" />
+</launch>

@@ -38,6 +38,7 @@ public:
 	// send
 	void setSpeed(const SetSpeedReq &speed_req);
 	void getSpeed();
+	void getTempAndHum();
 
 private:
 	void write(const std::vector<uint8_t> data);

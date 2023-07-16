@@ -10,6 +10,8 @@ public:
     virtual void setSpeedCallback() = 0;
 
     virtual void getSpeedCallback(const GetSpeedResp &resp) = 0;
+
+    virtual void getTempAndHumCallback(const GetTempAndHumResp &resp) = 0;
 };
 
 }

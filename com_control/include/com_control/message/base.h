@@ -14,7 +14,8 @@ union FloatHex {
 enum class MessageType {
     NONE,
     SET_SPEED,
-    GET_SPEED
+    GET_SPEED,
+    GET_TEMP_AND_HUM
 };
 
 uint8_t checkSum(std::vector<uint8_t> &data, uint32_t len);
