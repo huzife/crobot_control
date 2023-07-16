@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   std_msgs
   geometry_msgs
+  nav_msgs
   message_generation
 )
 
@@ -108,7 +109,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES crobot_control
-  CATKIN_DEPENDS roscpp std_msgs message_runtime
+  CATKIN_DEPENDS roscpp std_msgs geometry_msgs nav_msgs message_runtime
 #  DEPENDS system_lib
 )
 

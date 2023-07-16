@@ -11,6 +11,14 @@ private:
 	ros::NodeHandle nh;
 	ros::Publisher temp_hum_pub;
 	ros::Publisher velocity_pub;
+	ros::Publisher odom_pub;
+
+	ros::Time current_time;
+	ros::Time last_time;
+
+	double current_x;
+	double current_y;
+	double current_yaw;
 
 public:
 	ControllerCB(ros::NodeHandle &nh) : nh(nh) {
