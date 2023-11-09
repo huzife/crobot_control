@@ -7,9 +7,9 @@
 
 namespace crobot_ros {
 
-void ControllerCB::setSpeedCallback() {}
+void ControllerCB::set_speed_callback() {}
 
-void ControllerCB::getSpeedCallback(const crobot::GetSpeedResp &resp) {
+void ControllerCB::get_speed_callback(const crobot::Get_Speed_Resp &resp) {
     // geometry_msgs::Twist vel;
     // vel.linear.x = resp.linear_x;
     // vel.linear.y = resp.linear_y;
@@ -59,12 +59,12 @@ void ControllerCB::getSpeedCallback(const crobot::GetSpeedResp &resp) {
 
 }
 
-void ControllerCB::getTempAndHumCallback(const crobot::GetTempAndHumResp &resp) {
-    crobot_control::TempAndHum temp_hum;
-    temp_hum.temperature = resp.temperature;
-    temp_hum.humidity = resp.humidity;
-    temp_hum_pub.publish(temp_hum);
-}
+// void ControllerCB::getTempAndHumCallback(const crobot::GetTempAndHumResp &resp) {
+//     crobot_control::TempAndHum temp_hum;
+//     temp_hum.temperature = resp.temperature;
+//     temp_hum.humidity = resp.humidity;
+//     temp_hum_pub.publish(temp_hum);
+// }
 
 void ControllerCB::init() {
     temp_hum_pub = nh.advertise<crobot_control::TempAndHum>("temp_and_hum", 10);

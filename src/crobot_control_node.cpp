@@ -8,7 +8,7 @@ int main(int argc, char *argv[]) {
     ros::NodeHandle nh;
     ros::NodeHandle nh_private("~");
     crobot_ros::ControllerCB callbacks(nh);
-    crobot_ros::CRobotControl crobot_control(nh, nh_private, callbacks);
+    crobot_ros::CRobot_Control crobot_control(nh, nh_private, callbacks);
 
     crobot_control.start();
     

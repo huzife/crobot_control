@@ -2,57 +2,57 @@
 
 namespace crobot_ros {
 
-void CRobotControl::init() {
-	if (!nh_private.getParam("port_name", port_name))
-		port_name = "/dev/ttyUSB0";
+void CRobot_Control::init() {
+    if (!nh_private.getParam("port_name", port_name))
+        port_name = "/dev/ttyUSB0";
 
-	cmd_vel_sub = nh.subscribe<geometry_msgs::Twist>("/cmd_vel", 10,
-													 std::bind(&CRobotControl::twistSubscribeCB, this, std::placeholders::_1));
+    cmd_vel_sub = nh.subscribe<geometry_msgs::Twist>("/cmd_vel", 10,
+                                                     std::bind(&CRobot_Control::twist_subscribe_CB, this, std::placeholders::_1));
 
-	controller.init(port_name.c_str(),
-					itas109::BaudRate115200,
-					itas109::ParityNone,
-					itas109::DataBits8,
-					itas109::StopOne,
-					itas109::FlowNone,
-					1024);
+    controller.init(port_name.c_str(),
+                    itas109::BaudRate115200,
+                    itas109::ParityNone,
+                    itas109::DataBits8,
+                    itas109::StopOne,
+                    itas109::FlowNone,
+                    1024);
 
-	get_speed_thread = std::thread(std::bind(&CRobotControl::getSpeedFunc, this));
-	get_temp_hum_thread = std::thread(std::bind(&CRobotControl::getTempAndHumFunc, this));
+    get_speed_thread = std::thread(std::bind(&CRobot_Control::get_speed_func, this));
+    // get_temp_hum_thread = std::thread(std::bind(&CRobot_Control::getTempAndHumFunc, this));
 }
 
-void CRobotControl::start() {
+void CRobot_Control::start() {
     init();
-	controller.open();
+    controller.open();
 
     get_speed_thread.detach();
-	get_temp_hum_thread.detach();
+    get_temp_hum_thread.detach();
 }
 
-void CRobotControl::twistSubscribeCB(const geometry_msgs::Twist::ConstPtr &msg) {
-	// ROS_INFO("receive twist");
-	crobot::SetSpeedReq speed_req;
-	speed_req.linear_x = msg->linear.x;
-	speed_req.linear_y = msg->linear.y;
-	speed_req.angular_z = msg->angular.z;
+void CRobot_Control::twist_subscribe_CB(const geometry_msgs::Twist::ConstPtr &msg) {
+    // ROS_INFO("receive twist");
+    crobot::Set_Speed_Req speed_req;
+    speed_req.linear_x = msg->linear.x;
+    speed_req.linear_y = msg->linear.y;
+    speed_req.angular_z = msg->angular.z;
 
-	controller.setSpeed(speed_req);
+    controller.set_speed(speed_req);
 }
 
-void CRobotControl::getSpeedFunc() {
+void CRobot_Control::get_speed_func() {
     ros::Rate rate(20);
     while (true) {
         rate.sleep();
-        controller.getSpeed();
+        controller.get_speed();
     }
 }
 
-void CRobotControl::getTempAndHumFunc() {
-    ros::Rate rate(1);
-    while (true) {
-        rate.sleep();
-        controller.getTempAndHum();
-    }
-}
+// void CRobot_Control::getTempAndHumFunc() {
+//     ros::Rate rate(1);
+//     while (true) {
+//         rate.sleep();
+//         controller.getTempAndHum();
+//     }
+// }
 
 } // namespace crobot_ros

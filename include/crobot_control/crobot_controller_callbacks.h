@@ -6,33 +6,33 @@
 
 namespace crobot_ros {
 
-class ControllerCB : public crobot::ControllerCallbacks {
+class ControllerCB : public crobot::Controller_Callbacks {
 private:
-	ros::NodeHandle nh;
-	ros::Publisher temp_hum_pub;
-	ros::Publisher velocity_pub;
-	ros::Publisher odom_pub;
+    ros::NodeHandle nh;
+    ros::Publisher temp_hum_pub;
+    ros::Publisher velocity_pub;
+    ros::Publisher odom_pub;
 
-	ros::Time current_time;
-	ros::Time last_time;
+    ros::Time current_time;
+    ros::Time last_time;
 
-	double current_x;
-	double current_y;
-	double current_yaw;
+    double current_x;
+    double current_y;
+    double current_yaw;
 
 public:
-	ControllerCB(ros::NodeHandle &nh) : nh(nh) {
-		init();
-	}
+    ControllerCB(ros::NodeHandle &nh) : nh(nh) {
+        init();
+    }
 
-	void setSpeedCallback() override;
+    void set_speed_callback() override;
 
-	void getSpeedCallback(const crobot::GetSpeedResp &resp) override;
+    void get_speed_callback(const crobot::Get_Speed_Resp &resp) override;
 
-	void getTempAndHumCallback(const crobot::GetTempAndHumResp &resp) override;
+    // void getTempAndHumCallback(const crobot::GetTempAndHumResp &resp) override;
 
 private:
-	void init();
+    void init();
 };
 
 } // namespace crobot_ros

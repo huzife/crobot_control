@@ -6,22 +6,22 @@
 
 namespace crobot {
 
-class SetSpeedReq {
+class Set_Speed_Req {
 public:
-	float linear_x;
-	float linear_y;
-	float angular_z;
+    float linear_x;
+    float linear_y;
+    float angular_z;
 };
 
 class Request {
 private:
-	MessageType type;
-	std::vector<uint8_t> data;
+    Message_Type type;
+    std::vector<uint8_t> data;
 
 public:
-	Request(const std::vector<uint8_t> &raw_data, MessageType type);
-	Request(MessageType type);
-	std::vector<uint8_t> getData();
+    Request(const std::vector<uint8_t> &raw_data, Message_Type type);
+    Request(Message_Type type);
+    std::vector<uint8_t> get_data();
 };
 
 } // namespace crobot

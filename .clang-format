@@ -210,4 +210,4 @@ Standard: Auto
 TabWidth: 4
 
 # 使用tab字符: Never, ForIndentation, ForContinuationAndIndentation, AlignWithSpaces, Always
-UseTab: Always
+UseTab: Never

@@ -11,35 +11,35 @@
 
 namespace crobot_ros {
 
-class CRobotControl {
+class CRobot_Control {
 private:
-	ros::NodeHandle nh;
-	ros::NodeHandle nh_private;
-	ros::Subscriber cmd_vel_sub;
+    ros::NodeHandle nh;
+    ros::NodeHandle nh_private;
+    ros::Subscriber cmd_vel_sub;
 
-	crobot::Controller controller;
+    crobot::Controller controller;
 
-	std::string port_name;
-	uint32_t baudrate;
-	uint8_t parity;
-	uint8_t databit;
-	uint8_t stopbit;
-	uint8_t flow_control;
+    std::string port_name;
+    uint32_t baudrate;
+    uint8_t parity;
+    uint8_t databit;
+    uint8_t stopbit;
+    uint8_t flow_control;
 
     std::thread get_temp_hum_thread;
-	std::thread get_speed_thread;
+    std::thread get_speed_thread;
 
 public:
-	CRobotControl(ros::NodeHandle nh, ros::NodeHandle nh_private, crobot::ControllerCallbacks &cbs)
-		: nh(nh), nh_private(nh_private), controller(cbs) {}
+    CRobot_Control(ros::NodeHandle nh, ros::NodeHandle nh_private, crobot::Controller_Callbacks &cbs)
+        : nh(nh), nh_private(nh_private), controller(cbs) {}
 
-	void init();
-	void start();
+    void init();
+    void start();
     
 private:
-	void twistSubscribeCB(const geometry_msgs::Twist::ConstPtr &msg);
-    void getTempAndHumFunc();
-	void getSpeedFunc();
+    void twist_subscribe_CB(const geometry_msgs::Twist::ConstPtr &msg);
+    // void getTempAndHumFunc();
+    void get_speed_func();
 };
 
 } // namespace crobot_ros

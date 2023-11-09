@@ -6,30 +6,30 @@
 
 namespace crobot {
 
-class GetSpeedResp {
+class Get_Speed_Resp {
 public:
-	float linear_x;
-	float linear_y;
-	float angular_z;
+    float linear_x;
+    float linear_y;
+    float angular_z;
 };
 
-class GetTempAndHumResp {
-public:
-	float temperature;
-	float humidity;
-};
+// class GetTempAndHumResp {
+// public:
+// 	float temperature;
+// 	float humidity;
+// };
 
 class Response {
 private:
-	MessageType type;
-	std::vector<uint8_t> data;
+    Message_Type type;
+    std::vector<uint8_t> data;
 
 public:
-	Response(const std::vector<uint8_t> &data) : data(data) {}
-	bool parse();
-	MessageType getType();
-	GetSpeedResp get_GetSpeedResp();
-	GetTempAndHumResp get_GetTempAndHumResp();
+    Response(const std::vector<uint8_t> &data) : data(data) {}
+    bool parse();
+    Message_Type get_type();
+    Get_Speed_Resp get_speed_resp();
+    // GetTempAndHumResp get_GetTempAndHumResp();
 };
 
 } // namespace crobot

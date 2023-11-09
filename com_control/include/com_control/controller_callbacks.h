@@ -5,13 +5,13 @@
 
 namespace crobot {
 
-class ControllerCallbacks {
+class Controller_Callbacks {
 public:
-    virtual void setSpeedCallback() = 0;
+    virtual void set_speed_callback() = 0;
 
-    virtual void getSpeedCallback(const GetSpeedResp &resp) = 0;
+    virtual void get_speed_callback(const Get_Speed_Resp &resp) = 0;
 
-    virtual void getTempAndHumCallback(const GetTempAndHumResp &resp) = 0;
+    // virtual void getTempAndHumCallback(const GetTempAndHumResp &resp) = 0;
 };
 
 }
