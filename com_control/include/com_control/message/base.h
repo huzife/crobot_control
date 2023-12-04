@@ -15,14 +15,14 @@ enum class Message_Type {
     NONE,
     SET_SPEED,
     GET_SPEED,
-    INIT_IMU,
+    GET_IMU_TEMPERATURE,
     GET_IMU
     // GET_TEMP_AND_HUM
 };
 
-uint8_t check_sum(std::vector<uint8_t> &data, uint32_t len);
-void float_to_hex(float fval, std::vector<uint8_t> &hex, int offset);
-float hex_to_float(std::vector<uint8_t> &hex, int offset);
+uint8_t check_sum(std::vector<uint8_t>& data, uint32_t len);
+void float_to_hex(float fval, std::vector<uint8_t>& hex, int offset);
+float hex_to_float(std::vector<uint8_t>& hex, int offset);
 
 }
 

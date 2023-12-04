@@ -17,9 +17,11 @@ bool Response::parse() {
 
     // 检查功能码
     switch (data[3]) {
-    case 0x0: type = Message_Type::NONE; break;
-    case 0x1: type = Message_Type::SET_SPEED; break;
-    case 0x2: type = Message_Type::GET_SPEED; break;
+    case 0x00: type = Message_Type::NONE; break;
+    case 0x01: type = Message_Type::SET_SPEED; break;
+    case 0x02: type = Message_Type::GET_SPEED; break;
+    case 0x03: type = Message_Type::GET_IMU_TEMPERATURE; break;
+    case 0x04: type = Message_Type::GET_IMU; break;
     // case 0x3: type = Message_Type::GET_TEMP_AND_HUM; break;
     default: return false;
     }
@@ -33,19 +35,36 @@ Message_Type Response::get_type() {
 
 Get_Speed_Resp Response::get_speed_resp() {
     assert(type == Message_Type::GET_SPEED);
-    Get_Speed_Resp speed_info;
-    speed_info.linear_x = hex_to_float(data, 4);
-    speed_info.linear_y = hex_to_float(data, 8);
-    speed_info.angular_z = hex_to_float(data, 12);
-    return speed_info;
+
+    Get_Speed_Resp resp;
+    resp.linear_x = hex_to_float(data, 4);
+    resp.linear_y = hex_to_float(data, 8);
+    resp.angular_z = hex_to_float(data, 12);
+
+    return resp;
 }
 
-// GetTempAndHumResp Response::get_GetTempAndHumResp() {
-// 	assert(type == Message_Type::GET_TEMP_AND_HUM);
-// 	GetTempAndHumResp temp_hum_info;
-// 	temp_hum_info.temperature = hex_to_float(data, 4);
-// 	temp_hum_info.humidity = hex_to_float(data, 8);
-// 	return temp_hum_info;
-// }
+Get_IMU_Temperature_Resp Response::get_imu_temperature_resp() {
+    assert(type == Message_Type::GET_IMU_TEMPERATURE);
+
+    Get_IMU_Temperature_Resp resp;
+    resp.temperature = hex_to_float(data, 4);
+
+    return resp;
+}
+
+Get_IMU_Resp Response::get_imu_resp() {
+    assert(type == Message_Type::GET_IMU);
+
+    Get_IMU_Resp resp;
+    resp.accel_x = hex_to_float(data, 4);
+    resp.accel_y = hex_to_float(data, 8);
+    resp.accel_z = hex_to_float(data, 12);
+    resp.angular_x = hex_to_float(data, 16);
+    resp.angular_y = hex_to_float(data, 20);
+    resp.angular_z = hex_to_float(data, 24);
+
+    return resp;
+}
 
 } // namespace crobot

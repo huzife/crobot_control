@@ -19,7 +19,7 @@ private:
     std::vector<uint8_t> data;
 
 public:
-    Request(const std::vector<uint8_t> &raw_data, Message_Type type);
+    Request(const std::vector<uint8_t>& raw_data, Message_Type type);
     Request(Message_Type type);
     std::vector<uint8_t> get_data();
 };

@@ -13,11 +13,20 @@ public:
     float angular_z;
 };
 
-// class GetTempAndHumResp {
-// public:
-// 	float temperature;
-// 	float humidity;
-// };
+class Get_IMU_Temperature_Resp {
+public:
+    float temperature;
+};
+
+class Get_IMU_Resp {
+public:
+    float accel_x;
+    float accel_y;
+    float accel_z;
+    float angular_x;
+    float angular_y;
+    float angular_z;
+};
 
 class Response {
 private:
@@ -25,11 +34,12 @@ private:
     std::vector<uint8_t> data;
 
 public:
-    Response(const std::vector<uint8_t> &data) : data(data) {}
+    Response(const std::vector<uint8_t>& data): data(data) {}
     bool parse();
     Message_Type get_type();
     Get_Speed_Resp get_speed_resp();
-    // GetTempAndHumResp get_GetTempAndHumResp();
+    Get_IMU_Temperature_Resp get_imu_temperature_resp();
+    Get_IMU_Resp get_imu_resp();
 };
 
 } // namespace crobot

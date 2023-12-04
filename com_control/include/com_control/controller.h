@@ -9,6 +9,7 @@
 #include "com_control/message/response.h"
 #include <functional>
 #include <vector>
+#include <mutex>
 
 namespace crobot {
 
@@ -16,14 +17,14 @@ class Controller {
 private:
     itas109::CSerialPort sp;
     crobot::Listener listener;
-    Controller_Callbacks &callbacks;
+    Controller_Callbacks& callbacks;
 
 public:
-    Controller(Controller_Callbacks &cbs)
-        : listener(sp, std::bind(&Controller::process_data, this, std::placeholders::_1, std::placeholders::_2)),
-          callbacks(cbs) {}
+    Controller(Controller_Callbacks& cbs):
+        listener(sp, std::bind(&Controller::process_data, this, std::placeholders::_1, std::placeholders::_2)),
+        callbacks(cbs) {}
     ~Controller();
-    void init(const char *port_name,
+    void init(const char* port_name,
               itas109::BaudRate baudrate,
               itas109::Parity parity,
               itas109::DataBits databits,
@@ -36,12 +37,13 @@ public:
     void process_data(std::vector<uint8_t> data, uint32_t len);
 
     // send
-    void set_speed(const Set_Speed_Req &speed_req);
+    void set_speed(const Set_Speed_Req& speed_req);
     void get_speed();
-    // void getTempAndHum();
+    void get_imu_temperature();
+    void get_imu();
 
 private:
-    void write(const std::vector<uint8_t> data);
+    void write(const std::vector<uint8_t>& data);
 };
 
 } // namespace crobot

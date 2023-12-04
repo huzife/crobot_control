@@ -2,7 +2,7 @@
 
 namespace crobot {
 
-Request::Request(const std::vector<uint8_t> &raw_data, Message_Type type) {
+Request::Request(const std::vector<uint8_t>& raw_data, Message_Type type) {
     size_t len = raw_data.size();
 
     data.resize(4);

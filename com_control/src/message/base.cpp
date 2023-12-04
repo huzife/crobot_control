@@ -2,7 +2,7 @@
 
 namespace crobot {
 
-uint8_t check_sum(std::vector<uint8_t> &data, uint32_t len) {
+uint8_t check_sum(std::vector<uint8_t>& data, uint32_t len) {
     uint8_t sum = 0;
     for (uint16_t i = 0; i < len; i++) {
         sum += data[i];
@@ -11,7 +11,7 @@ uint8_t check_sum(std::vector<uint8_t> &data, uint32_t len) {
     return ~sum;
 }
 
-void float_to_hex(float fval, std::vector<uint8_t> &hex, int offset) {
+void float_to_hex(float fval, std::vector<uint8_t>& hex, int offset) {
     Float_Hex fh;
     fh.fval = fval;
     for (int i = 0; i < 4; i++) {
@@ -19,7 +19,7 @@ void float_to_hex(float fval, std::vector<uint8_t> &hex, int offset) {
     }
 }
 
-float hex_to_float(std::vector<uint8_t> &hex, int offset) {
+float hex_to_float(std::vector<uint8_t>& hex, int offset) {
     Float_Hex fh;
     for (int i = 0; i < 4; i++) {
         fh.hex[3 - i] = hex[i + offset];

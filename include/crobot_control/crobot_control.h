@@ -26,20 +26,23 @@ private:
     uint8_t stopbit;
     uint8_t flow_control;
 
-    std::thread get_temp_hum_thread;
+    // std::thread get_temp_hum_thread;
     std::thread get_speed_thread;
+    std::thread get_imu_temperature_thread;
+    std::thread get_imu_thread;
 
 public:
-    CRobot_Control(ros::NodeHandle nh, ros::NodeHandle nh_private, crobot::Controller_Callbacks &cbs)
+    CRobot_Control(ros::NodeHandle nh, ros::NodeHandle nh_private, crobot::Controller_Callbacks& cbs)
         : nh(nh), nh_private(nh_private), controller(cbs) {}
 
     void init();
     void start();
-    
+
 private:
-    void twist_subscribe_CB(const geometry_msgs::Twist::ConstPtr &msg);
-    // void getTempAndHumFunc();
+    void twist_subscribe_CB(const geometry_msgs::Twist::ConstPtr& msg);
     void get_speed_func();
+    void get_imu_temperature_func();
+    void get_imu_func();
 };
 
 } // namespace crobot_ros
