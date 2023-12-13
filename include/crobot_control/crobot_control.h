@@ -1,5 +1,5 @@
-#ifndef _CROBOT_CONTROL_H
-#define _CROBOT_CONTROL_H
+#ifndef CROBOT_CONTROL_H
+#define CROBOT_CONTROL_H
 
 #include "ros/ros.h"
 #include "geometry_msgs/Twist.h"
@@ -26,11 +26,6 @@ private:
     uint8_t stopbit;
     uint8_t flow_control;
 
-    // std::thread get_temp_hum_thread;
-    std::thread get_speed_thread;
-    std::thread get_imu_temperature_thread;
-    std::thread get_imu_thread;
-
 public:
     CRobot_Control(ros::NodeHandle nh, ros::NodeHandle nh_private, crobot::Controller_Callbacks& cbs)
         : nh(nh), nh_private(nh_private), controller(cbs) {}
@@ -47,4 +42,4 @@ private:
 
 } // namespace crobot_ros
 
-#endif // _CROBOT_CONTROL_H
+#endif // CROBOT_CONTROL_H

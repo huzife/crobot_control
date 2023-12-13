@@ -1,5 +1,5 @@
-#ifndef _CROBOT_CONTROLLER_CALLBACKS_H
-#define _CROBOT_CONTROLLER_CALLBACKS_H
+#ifndef CROBOT_CONTROLLER_CALLBACKS_H
+#define CROBOT_CONTROLLER_CALLBACKS_H
 
 #include "ros/ros.h"
 #include "com_control/controller_callbacks.h"
@@ -40,4 +40,4 @@ private:
 
 } // namespace crobot_ros
 
-#endif // _CROBOT_CONTROLLER_CALLBACKS_H
+#endif // CROBOT_CONTROLLER_CALLBACKS_H

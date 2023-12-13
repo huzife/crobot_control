@@ -22,7 +22,6 @@ bool Response::parse() {
     case 0x02: type = Message_Type::GET_SPEED; break;
     case 0x03: type = Message_Type::GET_IMU_TEMPERATURE; break;
     case 0x04: type = Message_Type::GET_IMU; break;
-    // case 0x3: type = Message_Type::GET_TEMP_AND_HUM; break;
     default: return false;
     }
 

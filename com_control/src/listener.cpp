@@ -4,7 +4,6 @@
 namespace crobot {
 
 void Listener::onReadEvent(const char* port_name, uint32_t read_buf_len) {
-    // std::cout << "received: " << read_buf_len << std::endl;
     if (read_buf_len == 0) return;
 
     char* data = new char[read_buf_len + 1];

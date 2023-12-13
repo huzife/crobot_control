@@ -1,5 +1,5 @@
-#ifndef _COMCONTROL_MESSAGE_BASE_H
-#define _COMCONTROL_MESSAGE_BASE_H
+#ifndef COM_CONTROL_MESSAGE_UTILS_H
+#define COM_CONTROL_MESSAGE_UTILS_H
 
 #include <cstdint>
 #include <vector>
@@ -11,19 +11,10 @@ union Float_Hex {
     float fval;
 };
 
-enum class Message_Type {
-    NONE,
-    SET_SPEED,
-    GET_SPEED,
-    GET_IMU_TEMPERATURE,
-    GET_IMU
-    // GET_TEMP_AND_HUM
-};
-
 uint8_t check_sum(std::vector<uint8_t>& data, uint32_t len);
 void float_to_hex(float fval, std::vector<uint8_t>& hex, int offset);
 float hex_to_float(std::vector<uint8_t>& hex, int offset);
 
 }
 
-#endif  // _COMCONTROL_MESSAGE_BASE_H
+#endif  // COM_CONTROL_MESSAGE_UTILS_H

@@ -1,5 +1,5 @@
-#ifndef _COMCONTROL_CONTROLLER_H
-#define _COMCONTROL_CONTROLLER_H
+#ifndef COM_CONTROL_CONTROLLER_H
+#define COM_CONTROL_CONTROLLER_H
 
 #include "com_control/controller_callbacks.h"
 #include "com_control/listener.h"
@@ -48,4 +48,4 @@ private:
 
 } // namespace crobot
 
-#endif // _COMCONTROL_CONTROLLER_H
+#endif // COM_CONTROL_CONTROLLER_H

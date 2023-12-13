@@ -1,7 +1,8 @@
-#ifndef _COMCONTROL_REQUEST_H
-#define _COMCONTROL_REQUEST_H
+#ifndef COM_CONTROL_MESSAGE_REQUEST_H
+#define COM_CONTROL_MESSAGE_REQUEST_H
 
-#include "base.h"
+#include "type.h"
+#include "utils.h"
 #include <vector>
 
 namespace crobot {
@@ -26,4 +27,4 @@ public:
 
 } // namespace crobot
 
-#endif // _COMCONTROL_REQUEST_H
+#endif // COM_CONTROL_MESSAGE_REQUEST_H

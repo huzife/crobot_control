@@ -1,5 +1,5 @@
-#ifndef _COMCONTROL_CONTROLLER_CALLBACK_H
-#define _COMCONTROL_CONTROLLER_CALLBACK_H
+#ifndef COM_CONTROL_CONTROLLER_CALLBACK_H
+#define COM_CONTROL_CONTROLLER_CALLBACK_H
 
 #include "com_control/message/response.h"
 
@@ -14,10 +14,8 @@ public:
     virtual void get_imu_temperature_callback(const Get_IMU_Temperature_Resp& resp) = 0;
 
     virtual void get_imu_callback(const Get_IMU_Resp& resp) = 0;
-
-    // virtual void getTempAndHumCallback(const GetTempAndHumResp &resp) = 0;
 };
 
 }
 
-#endif  // _COMCONTROL_CONTROLLER_CALLBACK_H
+#endif  // COM_CONTROL_CONTROLLER_CALLBACK_H

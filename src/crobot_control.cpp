@@ -19,19 +19,16 @@ void CRobot_Control::init() {
                     itas109::StopOne,
                     itas109::FlowNone,
                     4096);
-
-    // get_speed_thread = std::thread(std::bind(&CRobot_Control::get_speed_func, this));
-    get_imu_temperature_thread = std::thread(std::bind(&CRobot_Control::get_imu_temperature_func, this));
-    get_imu_thread = std::thread(std::bind(&CRobot_Control::get_imu_func, this));
 }
 
 void CRobot_Control::start() {
     init();
     controller.open();
 
-    // get_speed_thread.detach();
-    get_imu_temperature_thread.detach();
-    get_imu_thread.detach();
+    // create threads
+    // std::thread{std::bind(&CRobot_Control::get_speed_func, this)}.detach();
+    std::thread{std::bind(&CRobot_Control::get_imu_temperature_func, this)}.detach();
+    std::thread{std::bind(&CRobot_Control::get_imu_func, this)}.detach();
 }
 
 void CRobot_Control::twist_subscribe_CB(const geometry_msgs::Twist::ConstPtr& msg) {
@@ -47,7 +44,7 @@ void CRobot_Control::get_speed_func() {
     ros::Rate rate(20);
     while (true) {
         rate.sleep();
-        // controller.get_speed();
+        controller.get_speed();
     }
 }
 

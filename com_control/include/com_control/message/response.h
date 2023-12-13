@@ -1,7 +1,8 @@
-#ifndef _COMCONTROL_RESPONSE_H
-#define _COMCONTROL_RESPONSE_H
+#ifndef COM_CONTROL_MESSAGE_RESPONSE_H
+#define COM_CONTROL_MESSAGE_RESPONSE_H
 
-#include "base.h"
+#include "type.h"
+#include "utils.h"
 #include <vector>
 
 namespace crobot {
@@ -44,4 +45,4 @@ public:
 
 } // namespace crobot
 
-#endif // _COMCONTROL_RESPONSE_H
+#endif // COM_CONTROL_MESSAGE_RESPONSE_H

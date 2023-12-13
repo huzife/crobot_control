@@ -1,5 +1,6 @@
 #include "com_control/controller.h"
 #include "com_control/message/response.h"
+#include <iomanip>
 #include <iostream>
 
 namespace crobot {
@@ -36,7 +37,15 @@ void Controller::write(const std::vector<uint8_t>& data) {
 void Controller::process_data(std::vector<uint8_t> data, uint32_t len) {
     Response resp(data);
     bool ret = resp.parse();
-    if (!ret) return;
+    if (!ret) {
+        std::cout << "Error response, len = " << len << ", hex data = ";
+        for (int i : data) {
+            std::cout << std::hex << std::uppercase << std::setw(2)
+                      << std::setfill('0') << i << ' ';
+        }
+        std::cout << std::endl;
+        return;
+    }
 
     switch (resp.get_type()) {
     case Message_Type::NONE:

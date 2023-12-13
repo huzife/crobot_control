@@ -1,4 +1,4 @@
-#include "com_control/message/base.h"
+#include "com_control/message/utils.h"
 
 namespace crobot {
 

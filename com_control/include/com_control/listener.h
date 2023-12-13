@@ -1,5 +1,5 @@
-#ifndef _COMCONTROL_LISTENER_H
-#define _COMCONTROL_LISTENER_H
+#ifndef COM_CONTROL_LISTENER_H
+#define COM_CONTROL_LISTENER_H
 
 #include "CSerialPort/SerialPort.h"
 #include <functional>
@@ -22,4 +22,4 @@ public:
 
 } // namespace crobot
 
-#endif // _COMCONTROL_LISTENER_H
+#endif // COM_CONTROL_LISTENER_H
