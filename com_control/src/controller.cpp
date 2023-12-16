@@ -6,8 +6,10 @@
 namespace crobot {
 
 Controller::~Controller() {
-    if (sp.isOpen())
+    if (sp.isOpen()) {
+        std::cout << "close serial" << std::endl;
         sp.close();
+    }
 }
 
 void Controller::init(const char* port_name,
@@ -15,9 +17,8 @@ void Controller::init(const char* port_name,
                       itas109::Parity parity,
                       itas109::DataBits databits,
                       itas109::StopBits stopbits,
-                      itas109::FlowControl flow_control,
-                      uint32_t read_buf_size) {
-    sp.init(port_name, baudrate, parity, databits, stopbits, flow_control, read_buf_size);
+                      itas109::FlowControl flow_control) {
+    sp.init(port_name, baudrate, parity, databits, stopbits, flow_control, Listener::READ_BUF_SIZE);
     sp.setReadIntervalTimeout(0);
 }
 
@@ -26,7 +27,10 @@ void Controller::open() {
         std::cout << "Serial opened: " << sp.getPortName() << std::endl;
     else
         std::cout << "Failed to open serial: " << sp.getLastErrorMsg() << std::endl;
+
+    // start read
     sp.connectReadEvent(&listener);
+    std::thread{std::bind(&Controller::process_data, this)}.detach();
 }
 
 void Controller::write(const std::vector<uint8_t>& data) {
@@ -34,34 +38,44 @@ void Controller::write(const std::vector<uint8_t>& data) {
         std::cout << "Failed to send data: " << sp.getLastErrorMsg() << std::endl;
 }
 
-void Controller::process_data(std::vector<uint8_t> data, uint32_t len) {
-    Response resp(data);
-    bool ret = resp.parse();
-    if (!ret) {
-        std::cout << "Error response, len = " << len << ", hex data = ";
-        for (int i : data) {
-            std::cout << std::hex << std::uppercase << std::setw(2)
-                      << std::setfill('0') << i << ' ';
-        }
-        std::cout << std::endl;
-        return;
+void Controller::receive_data(uint8_t* data, uint32_t len) {
+    std::lock_guard<std::mutex> queue_lock{queue_mtx};
+    for (int i = 0; i < len; ++i) {
+        data_queue.push(data[i]);
     }
+}
 
-    switch (resp.get_type()) {
-    case Message_Type::NONE:
-        break;
-    case Message_Type::SET_SPEED:
-        callbacks.set_speed_callback();
-        break;
-    case Message_Type::GET_SPEED:
-        callbacks.get_speed_callback(resp.get_speed_resp());
-        break;
-    case Message_Type::GET_IMU_TEMPERATURE:
-        callbacks.get_imu_temperature_callback(resp.get_imu_temperature_resp());
-        break;
-    case Message_Type::GET_IMU:
-        callbacks.get_imu_callback(resp.get_imu_resp());
-        break;
+void Controller::process_data() {
+    Data_Parser parser;
+    while (true) {
+        while (!parser.success()) {
+            std::lock_guard<std::mutex> queue_lock{queue_mtx};
+            // std::cout << "start parse" << std::endl;
+            if (!data_queue.empty()) {
+                parser.parse(data_queue.front());
+                data_queue.pop();
+            }
+        }
+
+        auto resp = parser.get_response();
+        switch (resp.get_type()) {
+        case Message_Type::NONE:
+            break;
+        case Message_Type::SET_SPEED:
+            callbacks.set_speed_callback();
+            break;
+        case Message_Type::GET_SPEED:
+            callbacks.get_speed_callback(resp.get_speed_resp());
+            break;
+        case Message_Type::GET_IMU_TEMPERATURE:
+            callbacks.get_imu_temperature_callback(resp.get_imu_temperature_resp());
+            break;
+        case Message_Type::GET_IMU:
+            callbacks.get_imu_callback(resp.get_imu_resp());
+            break;
+        case Message_Type::ERROR:
+            break;
+        }
     }
 }
 

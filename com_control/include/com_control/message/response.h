@@ -7,20 +7,17 @@
 
 namespace crobot {
 
-class Get_Speed_Resp {
-public:
+struct Get_Speed_Resp {
     float linear_x;
     float linear_y;
     float angular_z;
 };
 
-class Get_IMU_Temperature_Resp {
-public:
+struct Get_IMU_Temperature_Resp {
     float temperature;
 };
 
-class Get_IMU_Resp {
-public:
+struct Get_IMU_Resp {
     float accel_x;
     float accel_y;
     float accel_z;
@@ -35,8 +32,8 @@ private:
     std::vector<uint8_t> data;
 
 public:
-    Response(const std::vector<uint8_t>& data): data(data) {}
-    bool parse();
+    Response(const std::vector<uint8_t>& data, uint32_t len);
+
     Message_Type get_type();
     Get_Speed_Resp get_speed_resp();
     Get_IMU_Temperature_Resp get_imu_temperature_resp();

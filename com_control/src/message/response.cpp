@@ -3,29 +3,34 @@
 
 namespace crobot {
 
-bool Response::parse() {
-    // 检查长度
-    size_t len = data.size();
-    if (len < 5) return false;
-    if (len != data[2] + 4) return false;
+Response::Response(const std::vector<uint8_t>& data, uint32_t len)
+    : data(data) {
+    if (len < 5 ||
+            len != data[2] + 4 ||
+            data[0] != 0xFE ||
+            data[1] != 0xEF)
+        type = Message_Type::NONE;
 
-    // 检查帧头
-    if (!(data[0] == 0xFE && data[1] == 0xEF)) return false;
-
-    // 检查校验和
-    if (check_sum(data, len) != 0) return false;
-
-    // 检查功能码
     switch (data[3]) {
-    case 0x00: type = Message_Type::NONE; break;
-    case 0x01: type = Message_Type::SET_SPEED; break;
-    case 0x02: type = Message_Type::GET_SPEED; break;
-    case 0x03: type = Message_Type::GET_IMU_TEMPERATURE; break;
-    case 0x04: type = Message_Type::GET_IMU; break;
-    default: return false;
+    case 0x00:
+        type = Message_Type::NONE;
+        break;
+    case 0x01:
+        type = Message_Type::SET_SPEED;
+        break;
+    case 0x02:
+        type = Message_Type::GET_SPEED;
+        break;
+    case 0x03:
+        type = Message_Type::GET_IMU_TEMPERATURE;
+        break;
+    case 0x04:
+        type = Message_Type::GET_IMU;
+        break;
+    default:
+        type = Message_Type::ERROR;
+        break;
     }
-
-    return true;
 }
 
 Message_Type Response::get_type() {

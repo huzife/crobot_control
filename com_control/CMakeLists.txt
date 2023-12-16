@@ -6,6 +6,7 @@ add_compile_options(-O2)
 
 add_library(com_control SHARED
     src/controller.cpp
+    src/data_parser.cpp
     src/listener.cpp
     src/message/request.cpp
     src/message/response.cpp

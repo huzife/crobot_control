@@ -17,8 +17,7 @@ void CRobot_Control::init() {
                     itas109::ParityNone,
                     itas109::DataBits8,
                     itas109::StopOne,
-                    itas109::FlowNone,
-                    4096);
+                    itas109::FlowNone);
 }
 
 void CRobot_Control::start() {

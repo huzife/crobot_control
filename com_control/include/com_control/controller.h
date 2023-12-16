@@ -2,14 +2,17 @@
 #define COM_CONTROL_CONTROLLER_H
 
 #include "com_control/controller_callbacks.h"
+#include "com_control/data_parser.h"
 #include "com_control/listener.h"
-#include "CSerialPort/SerialPort.h"
-#include "CSerialPort/SerialPortInfo.h"
 #include "com_control/message/request.h"
 #include "com_control/message/response.h"
+#include "CSerialPort/SerialPort.h"
+#include "CSerialPort/SerialPortInfo.h"
 #include <functional>
-#include <vector>
 #include <mutex>
+#include <queue>
+#include <thread>
+#include <vector>
 
 namespace crobot {
 
@@ -18,10 +21,15 @@ private:
     itas109::CSerialPort sp;
     crobot::Listener listener;
     Controller_Callbacks& callbacks;
+    std::queue<uint8_t> data_queue;
+    std::mutex queue_mtx;
 
 public:
     Controller(Controller_Callbacks& cbs):
-        listener(sp, std::bind(&Controller::process_data, this, std::placeholders::_1, std::placeholders::_2)),
+        listener(sp, std::bind(&Controller::receive_data,
+                               this,
+                               std::placeholders::_1,
+                               std::placeholders::_2)),
         callbacks(cbs) {}
     ~Controller();
     void init(const char* port_name,
@@ -29,12 +37,12 @@ public:
               itas109::Parity parity,
               itas109::DataBits databits,
               itas109::StopBits stopbits,
-              itas109::FlowControl flow_control,
-              uint32_t read_buf_size);
+              itas109::FlowControl flow_control);
     void open();
 
     // receive
-    void process_data(std::vector<uint8_t> data, uint32_t len);
+    void receive_data(uint8_t* data, uint32_t len);
+    void process_data();
 
     // send
     void set_speed(const Set_Speed_Req& speed_req);

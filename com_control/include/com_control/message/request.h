@@ -7,8 +7,7 @@
 
 namespace crobot {
 
-class Set_Speed_Req {
-public:
+struct Set_Speed_Req {
     float linear_x;
     float linear_y;
     float angular_z;

@@ -11,9 +11,9 @@ union Float_Hex {
     float fval;
 };
 
-uint8_t check_sum(std::vector<uint8_t>& data, uint32_t len);
+uint8_t check_sum(const std::vector<uint8_t>& data, uint32_t len);
 void float_to_hex(float fval, std::vector<uint8_t>& hex, int offset);
-float hex_to_float(std::vector<uint8_t>& hex, int offset);
+float hex_to_float(const std::vector<uint8_t>& hex, int offset);
 
 }
 
