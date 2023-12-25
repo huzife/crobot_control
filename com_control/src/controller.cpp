@@ -39,7 +39,6 @@ void Controller::write(const std::vector<uint8_t>& data) {
 }
 
 void Controller::receive_data(uint8_t* data, uint32_t len) {
-    std::lock_guard<std::mutex> queue_lock{queue_mtx};
     for (int i = 0; i < len; ++i) {
         data_queue.push(data[i]);
     }
@@ -49,12 +48,9 @@ void Controller::process_data() {
     Data_Parser parser;
     while (true) {
         while (!parser.success()) {
-            std::lock_guard<std::mutex> queue_lock{queue_mtx};
-            // std::cout << "start parse" << std::endl;
-            if (!data_queue.empty()) {
-                parser.parse(data_queue.front());
-                data_queue.pop();
-            }
+            uint8_t data;
+            if (data_queue.pop(data))
+                parser.parse(data);
         }
 
         auto resp = parser.get_response();

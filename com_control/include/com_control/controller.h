@@ -4,6 +4,7 @@
 #include "com_control/controller_callbacks.h"
 #include "com_control/data_parser.h"
 #include "com_control/listener.h"
+#include "com_control/swsr_queue.h"
 #include "com_control/message/request.h"
 #include "com_control/message/response.h"
 #include "CSerialPort/SerialPort.h"
@@ -21,16 +22,16 @@ private:
     itas109::CSerialPort sp;
     crobot::Listener listener;
     Controller_Callbacks& callbacks;
-    std::queue<uint8_t> data_queue;
-    std::mutex queue_mtx;
+    SWSR_Queue<uint8_t> data_queue;
 
 public:
-    Controller(Controller_Callbacks& cbs):
-        listener(sp, std::bind(&Controller::receive_data,
-                               this,
-                               std::placeholders::_1,
-                               std::placeholders::_2)),
-        callbacks(cbs) {}
+    Controller(Controller_Callbacks& cbs)
+        : listener(sp, std::bind(&Controller::receive_data,
+                                 this,
+                                 std::placeholders::_1,
+                                 std::placeholders::_2)),
+          callbacks(cbs),
+          data_queue(1024) {}
     ~Controller();
     void init(const char* port_name,
               itas109::BaudRate baudrate,
