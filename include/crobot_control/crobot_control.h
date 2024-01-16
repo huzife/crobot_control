@@ -5,7 +5,6 @@
 #include "geometry_msgs/Twist.h"
 #include "com_control/controller.h"
 #include "com_control/controller_callbacks.h"
-#include <functional>
 #include <string>
 #include <thread>
 
@@ -19,16 +18,16 @@ private:
 
     crobot::Controller controller;
 
-    std::string port_name;
-    uint32_t baudrate;
-    uint8_t parity;
-    uint8_t databit;
-    uint8_t stopbit;
-    uint8_t flow_control;
+    bool thread_end = false;
+    std::thread get_speed_thread;
+    std::thread get_imu_temperature_thread;
+    std::thread get_imu_data_thread;
 
 public:
-    CRobot_Control(ros::NodeHandle nh, ros::NodeHandle nh_private, crobot::Controller_Callbacks& cbs)
-        : nh(nh), nh_private(nh_private), controller(cbs) {}
+    CRobot_Control(ros::NodeHandle nh,
+                   ros::NodeHandle nh_private,
+                   crobot::Controller_Callbacks& cbs);
+    ~CRobot_Control();
 
     void init();
     void start();
@@ -37,7 +36,7 @@ private:
     void twist_subscribe_CB(const geometry_msgs::Twist::ConstPtr& msg);
     void get_speed_func();
     void get_imu_temperature_func();
-    void get_imu_func();
+    void get_imu_data_func();
 };
 
 } // namespace crobot_ros

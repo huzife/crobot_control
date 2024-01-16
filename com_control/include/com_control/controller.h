@@ -2,16 +2,12 @@
 #define COM_CONTROL_CONTROLLER_H
 
 #include "com_control/controller_callbacks.h"
-#include "com_control/data_parser.h"
 #include "com_control/listener.h"
 #include "com_control/swsr_queue.h"
 #include "com_control/message/request.h"
 #include "com_control/message/response.h"
 #include "CSerialPort/SerialPort.h"
-#include "CSerialPort/SerialPortInfo.h"
 #include <functional>
-#include <mutex>
-#include <queue>
 #include <thread>
 #include <vector>
 
@@ -23,6 +19,9 @@ private:
     crobot::Listener listener;
     Controller_Callbacks& callbacks;
     SWSR_Queue<uint8_t> data_queue;
+
+    bool thread_end = false;
+    std::thread process_thread;
 
 public:
     Controller(Controller_Callbacks& cbs)

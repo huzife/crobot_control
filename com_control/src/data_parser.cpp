@@ -44,7 +44,7 @@ void Data_Parser::parse(uint8_t data) {
 
 Response Data_Parser::get_response() {
     flag = false;
-    return Response{buf, buf[2] + 4};
+    return Response{buf, static_cast<uint32_t>(buf[2] + 4)};
 }
 
 } // namespace crobot

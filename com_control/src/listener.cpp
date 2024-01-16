@@ -1,5 +1,4 @@
 #include "com_control/listener.h"
-#include <iostream>
 
 namespace crobot {
 

@@ -1,6 +1,6 @@
 #include "com_control/controller.h"
+#include "com_control/data_parser.h"
 #include "com_control/message/response.h"
-#include <iomanip>
 #include <iostream>
 
 namespace crobot {
@@ -10,6 +10,9 @@ Controller::~Controller() {
         std::cout << "close serial" << std::endl;
         sp.close();
     }
+
+    thread_end = true;
+    process_thread.join();
 }
 
 void Controller::init(const char* port_name,
@@ -30,7 +33,7 @@ void Controller::open() {
 
     // start read
     sp.connectReadEvent(&listener);
-    std::thread{std::bind(&Controller::process_data, this)}.detach();
+    process_thread = std::thread{std::bind(&Controller::process_data, this)};
 }
 
 void Controller::write(const std::vector<uint8_t>& data) {
@@ -46,8 +49,11 @@ void Controller::receive_data(uint8_t* data, uint32_t len) {
 
 void Controller::process_data() {
     Data_Parser parser;
-    while (true) {
+    while (!thread_end) {
         while (!parser.success()) {
+            if (thread_end)
+                break;
+
             uint8_t data;
             if (data_queue.pop(data))
                 parser.parse(data);

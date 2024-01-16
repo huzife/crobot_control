@@ -3,7 +3,6 @@
 
 #include "CSerialPort/SerialPort.h"
 #include <functional>
-#include <vector>
 
 namespace crobot {
 

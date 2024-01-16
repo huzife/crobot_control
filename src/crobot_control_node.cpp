@@ -1,7 +1,5 @@
-#include "ros/ros.h"
 #include "crobot_control/crobot_control.h"
 #include "crobot_control/crobot_controller_callbacks.h"
-#include <iostream>
 
 int main(int argc, char* argv[]) {
     ros::init(argc, argv, "crobot_control_node");
