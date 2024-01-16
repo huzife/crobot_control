@@ -16,7 +16,7 @@ public:
     SWSR_Queue(SWSR_Queue&&) = delete;
     SWSR_Queue& operator=(SWSR_Queue&&) = delete;
 
-    SWSR_Queue(size_t size);
+    SWSR_Queue(std::size_t size);
     ~SWSR_Queue();
 
     /// @brief Push an element if not full
@@ -34,12 +34,12 @@ public:
     bool pop(T& val);
 
 private:
-    size_t next_index(size_t index) const;
+    std::size_t next_index(std::size_t index) const;
 
 private:
     std::atomic_size_t head_;
     std::atomic_size_t tail_;
-    size_t size_;
+    std::size_t size_;
     T* buf_;
 };
 

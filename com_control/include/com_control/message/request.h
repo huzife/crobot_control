@@ -1,27 +1,44 @@
 #ifndef COM_CONTROL_MESSAGE_REQUEST_H
 #define COM_CONTROL_MESSAGE_REQUEST_H
 
-#include "type.h"
-#include "utils.h"
+#include <cstdint>
 #include <vector>
 
 namespace crobot {
 
-struct Set_Speed_Req {
-    float linear_x;
-    float linear_y;
-    float angular_z;
+class Request {
+public:
+    Request() = default;
+    virtual ~Request() = default;
+
+    virtual std::vector<uint8_t> data() const = 0;
 };
 
-class Request {
-private:
-    Message_Type type;
-    std::vector<uint8_t> data;
-
+class Set_Speed_Req: public Request {
 public:
-    Request(const std::vector<uint8_t>& raw_data, Message_Type type);
-    Request(Message_Type type);
-    std::vector<uint8_t> get_data();
+    Set_Speed_Req(float linear_x, float angular_z);
+    ~Set_Speed_Req() = default;
+
+    std::vector<uint8_t> data() const override;
+
+private:
+    float linear_x_;
+    float angular_z_;
+};
+
+class Get_Speed_Req: public Request {
+public:
+    std::vector<uint8_t> data() const override;
+};
+
+class Get_IMU_Temperature_Req: public Request {
+public:
+    std::vector<uint8_t> data() const override;
+};
+
+class Get_IMU_Data_Req: public Request {
+public:
+    std::vector<uint8_t> data() const override;
 };
 
 } // namespace crobot

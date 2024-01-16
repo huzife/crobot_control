@@ -13,7 +13,7 @@ public:
 
     virtual void get_imu_temperature_callback(const Get_IMU_Temperature_Resp& resp) = 0;
 
-    virtual void get_imu_callback(const Get_IMU_Resp& resp) = 0;
+    virtual void get_imu_callback(const Get_IMU_Data_Resp& resp) = 0;
 };
 
 }

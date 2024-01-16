@@ -60,7 +60,7 @@ void Controller_CB::get_imu_temperature_callback(const crobot::Get_IMU_Temperatu
     imu_temperature_pub.publish(temperature);
 }
 
-void Controller_CB::get_imu_callback(const crobot::Get_IMU_Resp& resp) {
+void Controller_CB::get_imu_callback(const crobot::Get_IMU_Data_Resp& resp) {
     sensor_msgs::Imu raw_imu_data;
     raw_imu_data.header.stamp = ros::Time::now();
     raw_imu_data.header.frame_id = "imu_link";

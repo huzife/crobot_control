@@ -1,5 +1,5 @@
 template <typename T>
-SWSR_Queue<T>::SWSR_Queue(size_t size)
+SWSR_Queue<T>::SWSR_Queue(std::size_t size)
     : size_(size + 1),
       head_(0),
       tail_(0) {
@@ -45,6 +45,6 @@ bool SWSR_Queue<T>::pop(T& val) {
 }
 
 template <typename T>
-size_t SWSR_Queue<T>::next_index(size_t index) const {
+size_t SWSR_Queue<T>::next_index(std::size_t index) const {
     return (index + 1) % size_;
 }

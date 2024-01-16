@@ -45,20 +45,18 @@ void CRobot_Control::start() {
         std::thread{std::bind(&CRobot_Control::get_imu_data_func, this)};
 }
 
-void CRobot_Control::twist_subscribe_CB(const geometry_msgs::Twist::ConstPtr& msg) {
-    crobot::Set_Speed_Req speed_req;
-    speed_req.linear_x = msg->linear.x;
-    speed_req.linear_y = msg->linear.y;
-    speed_req.angular_z = msg->angular.z;
-
-    controller.set_speed(speed_req);
+void CRobot_Control::twist_subscribe_CB(
+    const geometry_msgs::Twist::ConstPtr& msg) {
+    controller.send_request(
+        crobot::Set_Speed_Req{static_cast<float>(msg->linear.x),
+                              static_cast<float>(msg->angular.z)});
 }
 
 void CRobot_Control::get_speed_func() {
     ros::Rate rate(20);
     while (!thread_end) {
         rate.sleep();
-        controller.get_speed();
+        controller.send_request(crobot::Get_Speed_Req{});
     }
 }
 
@@ -66,7 +64,7 @@ void CRobot_Control::get_imu_temperature_func() {
     ros::Rate rate(1);
     while (!thread_end) {
         rate.sleep();
-        controller.get_imu_temperature();
+        controller.send_request(crobot::Get_IMU_Temperature_Req{});
     }
 }
 
@@ -74,7 +72,7 @@ void CRobot_Control::get_imu_data_func() {
     ros::Rate rate(100);
     while (!thread_end) {
         rate.sleep();
-        controller.get_imu();
+        controller.send_request(crobot::Get_IMU_Data_Req{});
     }
 }
 

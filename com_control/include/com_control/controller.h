@@ -5,11 +5,8 @@
 #include "com_control/listener.h"
 #include "com_control/swsr_queue.h"
 #include "com_control/message/request.h"
-#include "com_control/message/response.h"
 #include "CSerialPort/SerialPort.h"
-#include <functional>
 #include <thread>
-#include <vector>
 
 namespace crobot {
 
@@ -24,14 +21,9 @@ private:
     std::thread process_thread;
 
 public:
-    Controller(Controller_Callbacks& cbs)
-        : listener(sp, std::bind(&Controller::receive_data,
-                                 this,
-                                 std::placeholders::_1,
-                                 std::placeholders::_2)),
-          callbacks(cbs),
-          data_queue(1024) {}
+    Controller(Controller_Callbacks& cbs);
     ~Controller();
+
     void init(const char* port_name,
               itas109::BaudRate baudrate,
               itas109::Parity parity,
@@ -45,13 +37,10 @@ public:
     void process_data();
 
     // send
-    void set_speed(const Set_Speed_Req& speed_req);
-    void get_speed();
-    void get_imu_temperature();
-    void get_imu();
+    void send_request(const Request& req);
 
 private:
-    void write(const std::vector<uint8_t>& data);
+    void write(const Request& req);
 };
 
 } // namespace crobot

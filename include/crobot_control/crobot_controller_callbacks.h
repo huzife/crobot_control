@@ -32,7 +32,7 @@ public:
 
     void get_imu_temperature_callback(const crobot::Get_IMU_Temperature_Resp& resp) override;
 
-    void get_imu_callback(const crobot::Get_IMU_Resp& resp) override;
+    void get_imu_callback(const crobot::Get_IMU_Data_Resp& resp) override;
 
 private:
     void init();

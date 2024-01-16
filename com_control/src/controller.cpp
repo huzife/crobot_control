@@ -4,6 +4,12 @@
 #include <iostream>
 
 namespace crobot {
+Controller::Controller(Controller_Callbacks& cbs)
+    : listener(sp, std::bind(&Controller::receive_data, this,
+                             std::placeholders::_1,
+                             std::placeholders::_2)),
+      callbacks(cbs),
+      data_queue(1024) {}
 
 Controller::~Controller() {
     if (sp.isOpen()) {
@@ -36,7 +42,8 @@ void Controller::open() {
     process_thread = std::thread{std::bind(&Controller::process_data, this)};
 }
 
-void Controller::write(const std::vector<uint8_t>& data) {
+void Controller::write(const Request& req) {
+    auto data = req.data();
     if (sp.writeData(data.data(), data.size()) == -1)
         std::cout << "Failed to send data: " << sp.getLastErrorMsg() << std::endl;
 }
@@ -50,17 +57,12 @@ void Controller::receive_data(uint8_t* data, uint32_t len) {
 void Controller::process_data() {
     Data_Parser parser;
     while (!thread_end) {
-        while (!parser.success()) {
-            if (thread_end)
-                break;
-
-            uint8_t data;
-            if (data_queue.pop(data))
-                parser.parse(data);
-        }
+        uint8_t data;
+        if (!data_queue.pop(data) || !parser.parse(data))
+            continue;
 
         auto resp = parser.get_response();
-        switch (resp.get_type()) {
+        switch (resp.type()) {
         case Message_Type::NONE:
             break;
         case Message_Type::SET_SPEED:
@@ -72,37 +74,15 @@ void Controller::process_data() {
         case Message_Type::GET_IMU_TEMPERATURE:
             callbacks.get_imu_temperature_callback(resp.get_imu_temperature_resp());
             break;
-        case Message_Type::GET_IMU:
+        case Message_Type::GET_IMU_DATA:
             callbacks.get_imu_callback(resp.get_imu_resp());
-            break;
-        case Message_Type::ERROR:
             break;
         }
     }
 }
 
-void Controller::set_speed(const Set_Speed_Req& speed_req) {
-    std::vector<uint8_t> raw_data(12);
-    float_to_hex(speed_req.linear_x, raw_data, 0);
-    float_to_hex(speed_req.linear_y, raw_data, 4);
-    float_to_hex(speed_req.angular_z, raw_data, 8);
-    Request req(raw_data, Message_Type::SET_SPEED);
-    write(req.get_data());
-}
-
-void Controller::get_speed() {
-    Request req(Message_Type::GET_SPEED);
-    write(req.get_data());
-}
-
-void Controller::get_imu_temperature() {
-    Request req(Message_Type::GET_IMU_TEMPERATURE);
-    write(req.get_data());
-}
-
-void Controller::get_imu() {
-    Request req(Message_Type::GET_IMU);
-    write(req.get_data());
+void Controller::send_request(const Request& req) {
+    write(req);
 }
 
 } // namespace crobot

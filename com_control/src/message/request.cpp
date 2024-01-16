@@ -1,33 +1,55 @@
 #include "com_control/message/request.h"
+#include "com_control/message/type.h"
+#include "com_control/message/utils.h"
+
+using namespace std;
 
 namespace crobot {
 
-Request::Request(const std::vector<uint8_t>& raw_data, Message_Type type) {
-    size_t len = raw_data.size();
+Set_Speed_Req::Set_Speed_Req(float linear_x, float angular_z)
+    : linear_x_(linear_x),
+      angular_z_(angular_z) {}
 
-    data.resize(4);
-    data[0] = 0xFE;
-    data[1] = 0xEF;
-    data[2] = len + 1;
-    data[3] = static_cast<uint8_t>(type);
+vector<uint8_t> Set_Speed_Req::data() const {
+    vector<uint8_t> ret(12);
+    ret[0] = 0xFE;
+    ret[1] = 0xEF;
+    ret[2] = 0x09;
+    ret[3] = static_cast<uint8_t>(Message_Type::SET_SPEED);
+    float_to_hex(linear_x_, ret, 4);
+    float_to_hex(angular_z_, ret, 8);
 
-    if (len > 0) {
-        data.insert(data.end(), raw_data.begin(), raw_data.end());
-    }
-    data.push_back(check_sum(data, len + 4));
+    return ret;
 }
 
-Request::Request(Message_Type type) {
-    data.resize(5);
-    data[0] = 0xFE;
-    data[1] = 0xEF;
-    data[2] = 0x01;
-    data[3] = static_cast<uint8_t>(type);
-    data[4] = check_sum(data, 4);
+vector<uint8_t> Get_Speed_Req::data() const {
+    vector<uint8_t> ret(4);
+    ret[0] = 0xFE;
+    ret[1] = 0xEF;
+    ret[2] = 0x01;
+    ret[3] = static_cast<uint8_t>(Message_Type::GET_SPEED);
+
+    return ret;
 }
 
-std::vector<uint8_t> Request::get_data() {
-    return data;
+vector<uint8_t> Get_IMU_Temperature_Req::data() const {
+    vector<uint8_t> ret(4);
+    ret[0] = 0xFE;
+    ret[1] = 0xEF;
+    ret[2] = 0x01;
+    ret[3] = static_cast<uint8_t>(Message_Type::GET_IMU_TEMPERATURE);
+
+    return ret;
+}
+
+vector<uint8_t> Get_IMU_Data_Req::data() const {
+    vector<uint8_t> ret(4);
+    ret[0] = 0xFE;
+    ret[1] = 0xEF;
+    ret[2] = 0x01;
+    ret[3] = static_cast<uint8_t>(Message_Type::GET_IMU_DATA);
+
+    return ret;
 }
 
 } // namespace crobot

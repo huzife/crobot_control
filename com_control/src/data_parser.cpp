@@ -2,49 +2,50 @@
 
 namespace crobot {
 
-Data_Parser::Data_Parser(uint32_t buf_len) {
-    this->buf_len = buf_len < 128 ? 128 : buf_len;
-    buf.resize(this->buf_len);
+Data_Parser::Data_Parser(uint32_t buf_len)
+    : state_(State::RX_HEADER_FE),
+      buf_(buf_len),
+      buf_len_(buf_len),
+      data_len_(0) {
+    buf_[0] = 0xFE;
+    buf_[1] = 0xEF;
 }
 
-void Data_Parser::parse(uint8_t data) {
-    if (!flag) {
-        buf[data_len] = data;
-
-        switch (data) {
-        case 0xFE:
-            FE_flag = true;
+bool Data_Parser::parse(uint8_t data) {
+    switch (state_) {
+        case State::RX_HEADER_FE:
+            if (data == 0xFE)
+                state_ = State::RX_HEADER_EF;
             break;
-        case 0xEF:
-            if (FE_flag) {
-                FE_flag = false;
-                FH_flag = true;
-                buf[0] = 0xFE;
-                buf[1] = 0xEF;
-                buf[2] = buf_len;
-                data_len = 1;
+        case State::RX_HEADER_EF:
+            if (data == 0xEF)
+                state_ = State::RX_LEN;
+            else if (data != 0xFE)
+                state_ = State::RX_HEADER_FE;
+            break;
+        case State::RX_LEN:
+            if (data + 3 > buf_len_) {
+                state_ = State::RX_HEADER_FE;
+            } else {
+                state_ = State::RX_DATA;
+                data_len_ = 0;
+                buf_[2] = data;
             }
             break;
-        default:
-            FE_flag = 0;
+        case State::RX_DATA:
+            buf_[3 + data_len_] = data;
+            if (++(data_len_) == buf_[2]) {
+                state_ = State::RX_HEADER_FE;
+                return true;
+            }
             break;
-        }
     }
 
-    if (FH_flag && (data_len > buf[2] + 2)) {
-        flag = !check_sum(buf, buf[2] + 4);
-        FE_flag = false;
-        FH_flag = false;
-        data_len = 0;
-    }
-
-    if (++data_len >= buf_len)
-        data_len = 0;
+    return false;
 }
 
 Response Data_Parser::get_response() {
-    flag = false;
-    return Response{buf, static_cast<uint32_t>(buf[2] + 4)};
+    return Response{buf_, static_cast<uint32_t>(buf_[2] + 3)};
 }
 
 } // namespace crobot
