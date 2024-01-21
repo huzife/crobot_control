@@ -10,36 +10,34 @@ template <typename T>
 SWSR_Queue<T>::~SWSR_Queue() {
     if (buf_) {
         delete[] buf_;
+        buf_ = nullptr;
     }
 }
 
 template <typename T>
 bool SWSR_Queue<T>::push(T val) {
-    auto cur_tail = tail_.load();
-    auto next_tail = next_index(cur_tail);
+    auto next_tail = next_index(tail_);
 
     // full
-    if (next_tail == head_.load())
+    if (next_tail == head_)
         return false;
 
     // push element
-    buf_[cur_tail] = val;
-    tail_.store(next_tail);
+    buf_[tail_] = val;
+    tail_ = next_tail;
 
     return true;
 }
 
 template <typename T>
 bool SWSR_Queue<T>::pop(T& val) {
-    auto cur_head = head_.load();
-
     // empty
-    if (cur_head == tail_.load())
+    if (head_ == tail_)
         return false;
 
     // pop element
-    val = buf_[cur_head];
-    head_.store(next_index(cur_head));
+    val = buf_[head_];
+    head_ = next_index(head_);
 
     return true;
 }

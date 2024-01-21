@@ -1,7 +1,7 @@
 #ifndef COM_CONTROL_SWSR_QUEUE_H
 #define COM_CONTROL_SWSR_QUEUE_H
 
-#include <atomic>
+#include <cstddef>
 
 /// @class SWSR_Queue
 /// @brief A thread-safe, single-write and single-read queue,
@@ -37,8 +37,8 @@ private:
     std::size_t next_index(std::size_t index) const;
 
 private:
-    std::atomic_size_t head_;
-    std::atomic_size_t tail_;
+    std::size_t head_;
+    std::size_t tail_;
     std::size_t size_;
     T* buf_;
 };
