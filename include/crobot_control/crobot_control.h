@@ -19,7 +19,7 @@ private:
     crobot::Controller controller;
 
     bool thread_end = false;
-    std::thread get_speed_thread;
+    std::thread get_odom_thread;
     std::thread get_imu_temperature_thread;
     std::thread get_imu_data_thread;
 
@@ -34,7 +34,7 @@ public:
 
 private:
     void twist_subscribe_CB(const geometry_msgs::Twist::ConstPtr& msg);
-    void get_speed_func();
+    void get_odom_func();
     void get_imu_temperature_func();
     void get_imu_data_func();
 };

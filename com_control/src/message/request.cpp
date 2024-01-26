@@ -22,12 +22,12 @@ vector<uint8_t> Set_Speed_Req::data() const {
     return ret;
 }
 
-vector<uint8_t> Get_Speed_Req::data() const {
+vector<uint8_t> Get_Odom_Req::data() const {
     vector<uint8_t> ret(4);
     ret[0] = 0xFE;
     ret[1] = 0xEF;
     ret[2] = 0x01;
-    ret[3] = static_cast<uint8_t>(Message_Type::GET_SPEED);
+    ret[3] = static_cast<uint8_t>(Message_Type::GET_ODOM);
 
     return ret;
 }

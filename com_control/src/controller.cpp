@@ -68,8 +68,8 @@ void Controller::process_data() {
         case Message_Type::SET_SPEED:
             callbacks.set_speed_callback();
             break;
-        case Message_Type::GET_SPEED:
-            callbacks.get_speed_callback(resp.get_speed_resp());
+        case Message_Type::GET_ODOM:
+            callbacks.get_odom_callback(resp.get_odom_resp());
             break;
         case Message_Type::GET_IMU_TEMPERATURE:
             callbacks.get_imu_temperature_callback(resp.get_imu_temperature_resp());

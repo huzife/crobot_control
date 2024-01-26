@@ -17,7 +17,7 @@ Response::Response(const std::vector<uint8_t>& data, uint32_t len)
         type_ = Message_Type::SET_SPEED;
         break;
     case 0x02:
-        type_ = Message_Type::GET_SPEED;
+        type_ = Message_Type::GET_ODOM;
         break;
     case 0x03:
         type_ = Message_Type::GET_IMU_TEMPERATURE;
@@ -35,13 +35,15 @@ Message_Type Response::type() {
     return type_;
 }
 
-Get_Speed_Resp Response::get_speed_resp() {
-    assert(type_ == Message_Type::GET_SPEED);
+Get_Odom_Resp Response::get_odom_resp() {
+    assert(type_ == Message_Type::GET_ODOM);
 
-    Get_Speed_Resp resp;
+    Get_Odom_Resp resp;
     resp.linear_x = hex_to_float(data_, 4);
-    resp.linear_y = hex_to_float(data_, 8);
-    resp.angular_z = hex_to_float(data_, 12);
+    resp.angular_z = hex_to_float(data_, 8);
+    resp.position_x = hex_to_float(data_, 12);
+    resp.position_y = hex_to_float(data_, 16);
+    resp.direction = hex_to_float(data_, 20);
 
     return resp;
 }

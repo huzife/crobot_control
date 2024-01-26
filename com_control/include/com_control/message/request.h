@@ -26,7 +26,7 @@ private:
     float angular_z_;
 };
 
-class Get_Speed_Req: public Request {
+class Get_Odom_Req: public Request {
 public:
     std::vector<uint8_t> data() const override;
 };
