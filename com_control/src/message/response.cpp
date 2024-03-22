@@ -14,7 +14,7 @@ Response::Response(const std::vector<uint8_t>& data, uint32_t len)
 
     switch (data[3]) {
     case 0x01:
-        type_ = Message_Type::SET_SPEED;
+        type_ = Message_Type::SET_VELOCITY;
         break;
     case 0x02:
         type_ = Message_Type::GET_ODOM;
@@ -40,10 +40,11 @@ Get_Odom_Resp Response::get_odom_resp() {
 
     Get_Odom_Resp resp;
     resp.linear_x = hex_to_float(data_, 4);
-    resp.angular_z = hex_to_float(data_, 8);
-    resp.position_x = hex_to_float(data_, 12);
-    resp.position_y = hex_to_float(data_, 16);
-    resp.direction = hex_to_float(data_, 20);
+    resp.linear_y = hex_to_float(data_, 8);
+    resp.angular_z = hex_to_float(data_, 12);
+    resp.position_x = hex_to_float(data_, 16);
+    resp.position_y = hex_to_float(data_, 20);
+    resp.direction = hex_to_float(data_, 24);
 
     return resp;
 }

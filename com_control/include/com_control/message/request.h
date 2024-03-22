@@ -14,15 +14,16 @@ public:
     virtual std::vector<uint8_t> data() const = 0;
 };
 
-class Set_Speed_Req: public Request {
+class Set_Velocity_Req: public Request {
 public:
-    Set_Speed_Req(float linear_x, float angular_z);
-    ~Set_Speed_Req() = default;
+    Set_Velocity_Req(float linear_x, float linear_y, float angular_z);
+    ~Set_Velocity_Req() = default;
 
     std::vector<uint8_t> data() const override;
 
 private:
     float linear_x_;
+    float linear_y_;
     float angular_z_;
 };
 

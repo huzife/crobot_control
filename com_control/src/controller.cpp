@@ -65,8 +65,8 @@ void Controller::process_data() {
         switch (resp.type()) {
         case Message_Type::NONE:
             break;
-        case Message_Type::SET_SPEED:
-            callbacks.set_speed_callback();
+        case Message_Type::SET_VELOCITY:
+            callbacks.set_velocity_callback();
             break;
         case Message_Type::GET_ODOM:
             callbacks.get_odom_callback(resp.get_odom_resp());
@@ -75,7 +75,7 @@ void Controller::process_data() {
             callbacks.get_imu_temperature_callback(resp.get_imu_temperature_resp());
             break;
         case Message_Type::GET_IMU_DATA:
-            callbacks.get_imu_callback(resp.get_imu_resp());
+            callbacks.get_imu_data_callback(resp.get_imu_resp());
             break;
         }
     }

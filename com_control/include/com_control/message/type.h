@@ -3,7 +3,7 @@
 
 enum class Message_Type: unsigned char {
     NONE,
-    SET_SPEED,
+    SET_VELOCITY,
     GET_ODOM,
     GET_IMU_TEMPERATURE,
     GET_IMU_DATA

@@ -6,7 +6,7 @@
 
 namespace crobot_ros {
 
-void Controller_CB::set_speed_callback() {}
+void Controller_CB::set_velocity_callback() {}
 
 void Controller_CB::get_odom_callback(const crobot::Get_Odom_Resp& resp) {
     nav_msgs::Odometry odom;
@@ -22,7 +22,7 @@ void Controller_CB::get_odom_callback(const crobot::Get_Odom_Resp& resp) {
 
     // 速度
     odom.twist.twist.linear.x = resp.linear_x;
-    odom.twist.twist.linear.y = 0.0;
+    odom.twist.twist.linear.y = resp.linear_y;
     odom.twist.twist.linear.z = 0.0;
     odom.twist.twist.angular.x = 0.0;
     odom.twist.twist.angular.y = 0.0;
@@ -38,7 +38,7 @@ void Controller_CB::get_imu_temperature_callback(const crobot::Get_IMU_Temperatu
     imu_temperature_pub.publish(temperature);
 }
 
-void Controller_CB::get_imu_callback(const crobot::Get_IMU_Data_Resp& resp) {
+void Controller_CB::get_imu_data_callback(const crobot::Get_IMU_Data_Resp& resp) {
     sensor_msgs::Imu raw_imu_data;
     raw_imu_data.header.stamp = ros::Time::now();
     raw_imu_data.header.frame_id = "imu_link";

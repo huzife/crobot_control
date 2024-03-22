@@ -48,8 +48,9 @@ void CRobot_Control::start() {
 void CRobot_Control::twist_subscribe_CB(
     const geometry_msgs::Twist::ConstPtr& msg) {
     controller.send_request(
-        crobot::Set_Speed_Req{static_cast<float>(msg->linear.x),
-                              static_cast<float>(msg->angular.z)});
+        crobot::Set_Velocity_Req{static_cast<float>(msg->linear.x),
+                                 static_cast<float>(msg->linear.y),
+                                 static_cast<float>(msg->angular.z)});
 }
 
 void CRobot_Control::get_odom_func() {

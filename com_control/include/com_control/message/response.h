@@ -9,6 +9,7 @@ namespace crobot {
 
 struct Get_Odom_Resp {
     float linear_x;
+    float linear_y;
     float angular_z;
     float position_x;
     float position_y;
