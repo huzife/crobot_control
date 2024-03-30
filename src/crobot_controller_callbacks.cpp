@@ -1,5 +1,6 @@
 #include "crobot_control/crobot_controller_callbacks.h"
 #include "std_msgs/Float32.h"
+#include "std_msgs/UInt16.h"
 #include "sensor_msgs/Imu.h"
 #include "nav_msgs/Odometry.h"
 #include "tf/transform_datatypes.h"
@@ -39,24 +40,32 @@ void Controller_CB::get_imu_temperature_callback(const crobot::Get_IMU_Temperatu
 }
 
 void Controller_CB::get_imu_data_callback(const crobot::Get_IMU_Data_Resp& resp) {
-    sensor_msgs::Imu raw_imu_data;
-    raw_imu_data.header.stamp = ros::Time::now();
-    raw_imu_data.header.frame_id = "imu_link";
+    sensor_msgs::Imu imu_raw_data;
+    imu_raw_data.header.stamp = ros::Time::now();
+    imu_raw_data.header.frame_id = "imu_link";
 
-    raw_imu_data.linear_acceleration.x = resp.accel_x;
-    raw_imu_data.linear_acceleration.y = resp.accel_y;
-    raw_imu_data.linear_acceleration.z = resp.accel_z;
-    raw_imu_data.angular_velocity.x = resp.angular_x;
-    raw_imu_data.angular_velocity.y = resp.angular_y;
-    raw_imu_data.angular_velocity.z = resp.angular_z;
+    imu_raw_data.linear_acceleration.x = resp.accel_x;
+    imu_raw_data.linear_acceleration.y = resp.accel_y;
+    imu_raw_data.linear_acceleration.z = resp.accel_z;
+    imu_raw_data.angular_velocity.x = resp.angular_x;
+    imu_raw_data.angular_velocity.y = resp.angular_y;
+    imu_raw_data.angular_velocity.z = resp.angular_z;
 
-    imu_raw_pub.publish(raw_imu_data);
+    imu_raw_data_pub.publish(imu_raw_data);
+}
+
+void Controller_CB::get_ultrasonic_range_callback(const crobot::Get_Ultrasonic_Range_Resp& resp) {
+    std_msgs::UInt16 range;
+    range.data = resp.range;
+
+    ultrasonic_range_pub.publish(range);
 }
 
 void Controller_CB::init() {
     odom_pub = nh.advertise<nav_msgs::Odometry>("odom", 10);
-    imu_raw_pub = nh.advertise<sensor_msgs::Imu>("imu/raw_data", 10);
     imu_temperature_pub = nh.advertise<std_msgs::Float32>("imu/temperature", 10);
+    imu_raw_data_pub = nh.advertise<sensor_msgs::Imu>("imu/raw_data", 10);
+    ultrasonic_range_pub = nh.advertise<std_msgs::UInt16>("ultrasonic/range", 10);
 }
 
 } // namespace crobot_ros

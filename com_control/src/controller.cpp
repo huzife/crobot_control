@@ -63,8 +63,6 @@ void Controller::process_data() {
 
         auto resp = parser.get_response();
         switch (resp.type()) {
-        case Message_Type::NONE:
-            break;
         case Message_Type::SET_VELOCITY:
             callbacks.set_velocity_callback();
             break;
@@ -76,6 +74,11 @@ void Controller::process_data() {
             break;
         case Message_Type::GET_IMU_DATA:
             callbacks.get_imu_data_callback(resp.get_imu_resp());
+            break;
+        case Message_Type::GET_ULTRASONIC_RANGE:
+            callbacks.get_ultrasonic_range_callback(resp.get_ultrasonic_range_resp());
+            break;
+        default:
             break;
         }
     }

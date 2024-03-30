@@ -43,6 +43,9 @@ void CRobot_Control::start() {
                               this)};
     get_imu_data_thread =
         std::thread{std::bind(&CRobot_Control::get_imu_data_func, this)};
+
+    get_ultrasonic_range_thread =
+        std::thread{std::bind(&CRobot_Control::get_ultrasonic_range_func, this)};
 }
 
 void CRobot_Control::twist_subscribe_CB(
@@ -74,6 +77,14 @@ void CRobot_Control::get_imu_data_func() {
     while (!thread_end) {
         rate.sleep();
         controller.send_request(crobot::Get_IMU_Data_Req{});
+    }
+}
+
+void CRobot_Control::get_ultrasonic_range_func() {
+    ros::Rate rate(20);
+    while (!thread_end) {
+        rate.sleep();
+        controller.send_request(crobot::Get_Ultrasonic_Range_Req{});
     }
 }
 

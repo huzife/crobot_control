@@ -22,6 +22,7 @@ private:
     std::thread get_odom_thread;
     std::thread get_imu_temperature_thread;
     std::thread get_imu_data_thread;
+    std::thread get_ultrasonic_range_thread;
 
 public:
     CRobot_Control(ros::NodeHandle nh,
@@ -37,6 +38,7 @@ private:
     void get_odom_func();
     void get_imu_temperature_func();
     void get_imu_data_func();
+    void get_ultrasonic_range_func();
 };
 
 } // namespace crobot_ros

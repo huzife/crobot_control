@@ -29,6 +29,10 @@ struct Get_IMU_Data_Resp {
     float angular_z;
 };
 
+struct Get_Ultrasonic_Range_Resp {
+    uint16_t range;
+};
+
 class Response {
 private:
     Message_Type type_;
@@ -41,6 +45,7 @@ public:
     Get_Odom_Resp get_odom_resp();
     Get_IMU_Temperature_Resp get_imu_temperature_resp();
     Get_IMU_Data_Resp get_imu_resp();
+    Get_Ultrasonic_Range_Resp get_ultrasonic_range_resp();
 };
 
 } // namespace crobot

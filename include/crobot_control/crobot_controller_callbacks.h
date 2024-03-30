@@ -10,8 +10,9 @@ class Controller_CB: public crobot::Controller_Callbacks {
 private:
     ros::NodeHandle nh;
     ros::Publisher odom_pub;
-    ros::Publisher imu_raw_pub;
     ros::Publisher imu_temperature_pub;
+    ros::Publisher imu_raw_data_pub;
+    ros::Publisher ultrasonic_range_pub;
 
 public:
     Controller_CB(ros::NodeHandle& nh) : nh(nh) {
@@ -25,6 +26,8 @@ public:
     void get_imu_temperature_callback(const crobot::Get_IMU_Temperature_Resp& resp) override;
 
     void get_imu_data_callback(const crobot::Get_IMU_Data_Resp& resp) override;
+
+    void get_ultrasonic_range_callback(const crobot::Get_Ultrasonic_Range_Resp& resp) override;
 
 private:
     void init();

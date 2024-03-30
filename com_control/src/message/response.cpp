@@ -25,6 +25,9 @@ Response::Response(const std::vector<uint8_t>& data, uint32_t len)
     case 0x04:
         type_ = Message_Type::GET_IMU_DATA;
         break;
+    case 0x05:
+        type_ = Message_Type::GET_ULTRASONIC_RANGE;
+        break;
     default:
         type_ = Message_Type::NONE;
         break;
@@ -68,6 +71,15 @@ Get_IMU_Data_Resp Response::get_imu_resp() {
     resp.angular_x = hex_to_float(data_, 16);
     resp.angular_y = hex_to_float(data_, 20);
     resp.angular_z = hex_to_float(data_, 24);
+
+    return resp;
+}
+
+Get_Ultrasonic_Range_Resp Response::get_ultrasonic_range_resp() {
+    assert(type_ == Message_Type::GET_ULTRASONIC_RANGE);
+
+    Get_Ultrasonic_Range_Resp resp;
+    resp.range = (data_[4] << 8) | data_[5];
 
     return resp;
 }

@@ -42,6 +42,11 @@ public:
     std::vector<uint8_t> data() const override;
 };
 
+class Get_Ultrasonic_Range_Req: public Request {
+public:
+    std::vector<uint8_t> data() const override;
+};
+
 } // namespace crobot
 
 #endif // COM_CONTROL_MESSAGE_REQUEST_H

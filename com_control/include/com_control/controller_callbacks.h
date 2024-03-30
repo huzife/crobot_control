@@ -14,6 +14,8 @@ public:
     virtual void get_imu_temperature_callback(const Get_IMU_Temperature_Resp& resp) = 0;
 
     virtual void get_imu_data_callback(const Get_IMU_Data_Resp& resp) = 0;
+
+    virtual void get_ultrasonic_range_callback(const Get_Ultrasonic_Range_Resp& resp) = 0;
 };
 
 }
