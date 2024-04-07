@@ -12,7 +12,7 @@ Set_Velocity_Req::Set_Velocity_Req(float linear_x, float linear_y, float angular
       angular_z_(angular_z) {}
 
 vector<uint8_t> Set_Velocity_Req::data() const {
-    vector<uint8_t> ret(12);
+    vector<uint8_t> ret(16);
     ret[0] = 0xFE;
     ret[1] = 0xEF;
     ret[2] = 0x0D;

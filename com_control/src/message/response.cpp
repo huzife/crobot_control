@@ -9,8 +9,10 @@ Response::Response(const std::vector<uint8_t>& data, uint32_t len)
     if (len < 4 ||
         len != data[2] + 3 ||
         data[0] != 0xFE ||
-        data[1] != 0xEF)
+        data[1] != 0xEF) {
         type_ = Message_Type::NONE;
+        return;
+    }
 
     switch (data[3]) {
     case 0x01:
