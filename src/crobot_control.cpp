@@ -14,6 +14,7 @@ CRobot_Control::~CRobot_Control() {
     get_odom_thread.join();
     get_imu_temperature_thread.join();
     get_imu_data_thread.join();
+    get_battery_voltage_thread.join();
 }
 
 void CRobot_Control::init() {
@@ -43,9 +44,10 @@ void CRobot_Control::start() {
                               this)};
     get_imu_data_thread =
         std::thread{std::bind(&CRobot_Control::get_imu_data_func, this)};
-
     get_ultrasonic_range_thread =
         std::thread{std::bind(&CRobot_Control::get_ultrasonic_range_func, this)};
+    get_battery_voltage_thread =
+        std::thread{std::bind(&CRobot_Control::get_battery_voltage_func, this)};
 }
 
 void CRobot_Control::twist_subscribe_CB(
@@ -85,6 +87,14 @@ void CRobot_Control::get_ultrasonic_range_func() {
     while (!thread_end) {
         rate.sleep();
         controller.send_request(crobot::Get_Ultrasonic_Range_Req{});
+    }
+}
+
+void CRobot_Control::get_battery_voltage_func() {
+    ros::Rate rate(1);
+    while (!thread_end) {
+        rate.sleep();
+        controller.send_request(crobot::Get_Battery_Voltage_Req{});
     }
 }
 

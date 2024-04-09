@@ -33,19 +33,23 @@ struct Get_Ultrasonic_Range_Resp {
     uint16_t range;
 };
 
+struct Get_Battery_Voltage_Resp {
+    float voltage;
+};
+
 class Response {
 private:
-    Message_Type type_;
     std::vector<uint8_t> data_;
 
 public:
     Response(const std::vector<uint8_t>& data, uint32_t len);
 
-    Message_Type type();
-    Get_Odom_Resp get_odom_resp();
-    Get_IMU_Temperature_Resp get_imu_temperature_resp();
-    Get_IMU_Data_Resp get_imu_resp();
-    Get_Ultrasonic_Range_Resp get_ultrasonic_range_resp();
+    Message_Type type() const;
+    Get_Odom_Resp get_odom_resp() const;
+    Get_IMU_Temperature_Resp get_imu_temperature_resp() const;
+    Get_IMU_Data_Resp get_imu_resp() const;
+    Get_Ultrasonic_Range_Resp get_ultrasonic_range_resp() const;
+    Get_Battery_Voltage_Resp get_battery_voltage_resp() const;
 };
 
 } // namespace crobot

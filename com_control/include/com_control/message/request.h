@@ -47,6 +47,10 @@ public:
     std::vector<uint8_t> data() const override;
 };
 
+class Get_Battery_Voltage_Req: public Request {
+    std::vector<uint8_t> data() const override;
+};
+
 } // namespace crobot
 
 #endif // COM_CONTROL_MESSAGE_REQUEST_H

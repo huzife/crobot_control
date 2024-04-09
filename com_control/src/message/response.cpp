@@ -1,48 +1,19 @@
 #include "com_control/message/response.h"
 #include "com_control/message/utils.h"
-#include <assert.h>
 
 namespace crobot {
 
 Response::Response(const std::vector<uint8_t>& data, uint32_t len)
     : data_(data) {
-    if (len < 4 ||
-        len != data[2] + 3 ||
-        data[0] != 0xFE ||
-        data[1] != 0xEF) {
-        type_ = Message_Type::NONE;
-        return;
-    }
-
-    switch (data[3]) {
-    case 0x01:
-        type_ = Message_Type::SET_VELOCITY;
-        break;
-    case 0x02:
-        type_ = Message_Type::GET_ODOM;
-        break;
-    case 0x03:
-        type_ = Message_Type::GET_IMU_TEMPERATURE;
-        break;
-    case 0x04:
-        type_ = Message_Type::GET_IMU_DATA;
-        break;
-    case 0x05:
-        type_ = Message_Type::GET_ULTRASONIC_RANGE;
-        break;
-    default:
-        type_ = Message_Type::NONE;
-        break;
-    }
 }
 
-Message_Type Response::type() {
-    return type_;
+Message_Type Response::type() const {
+    if (data_[3] >= static_cast<int>(Message_Type::MESSAGE_TYPE_MAX))
+        return Message_Type::MESSAGE_TYPE_MAX;
+    return static_cast<Message_Type>(data_[3]);
 }
 
-Get_Odom_Resp Response::get_odom_resp() {
-    assert(type_ == Message_Type::GET_ODOM);
-
+Get_Odom_Resp Response::get_odom_resp() const {
     Get_Odom_Resp resp;
     resp.linear_x = hex_to_float(data_, 4);
     resp.linear_y = hex_to_float(data_, 8);
@@ -54,18 +25,14 @@ Get_Odom_Resp Response::get_odom_resp() {
     return resp;
 }
 
-Get_IMU_Temperature_Resp Response::get_imu_temperature_resp() {
-    assert(type_ == Message_Type::GET_IMU_TEMPERATURE);
-
+Get_IMU_Temperature_Resp Response::get_imu_temperature_resp() const {
     Get_IMU_Temperature_Resp resp;
     resp.temperature = hex_to_float(data_, 4);
 
     return resp;
 }
 
-Get_IMU_Data_Resp Response::get_imu_resp() {
-    assert(type_ == Message_Type::GET_IMU_DATA);
-
+Get_IMU_Data_Resp Response::get_imu_resp() const {
     Get_IMU_Data_Resp resp;
     resp.accel_x = hex_to_float(data_, 4);
     resp.accel_y = hex_to_float(data_, 8);
@@ -77,11 +44,16 @@ Get_IMU_Data_Resp Response::get_imu_resp() {
     return resp;
 }
 
-Get_Ultrasonic_Range_Resp Response::get_ultrasonic_range_resp() {
-    assert(type_ == Message_Type::GET_ULTRASONIC_RANGE);
-
+Get_Ultrasonic_Range_Resp Response::get_ultrasonic_range_resp() const {
     Get_Ultrasonic_Range_Resp resp;
     resp.range = (data_[4] << 8) | data_[5];
+
+    return resp;
+}
+
+Get_Battery_Voltage_Resp Response::get_battery_voltage_resp() const {
+    Get_Battery_Voltage_Resp resp;
+    resp.voltage = hex_to_float(data_, 4);
 
     return resp;
 }

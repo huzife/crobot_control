@@ -18,7 +18,7 @@ Controller::~Controller() {
     }
 
     thread_end = true;
-    process_thread.join();
+    base_com_thread.join();
 }
 
 void Controller::init(const char* port_name,
@@ -39,7 +39,7 @@ void Controller::open() {
 
     // start read
     sp.connectReadEvent(&listener);
-    process_thread = std::thread{std::bind(&Controller::process_data, this)};
+    base_com_thread = std::thread{std::bind(&Controller::base_com_func, this)};
 }
 
 void Controller::write(const Request& req) {
@@ -54,35 +54,45 @@ void Controller::receive_data(uint8_t* data, uint32_t len) {
     }
 }
 
-void Controller::process_data() {
+void Controller::process_response(const Response& resp) {
+    switch (resp.type()) {
+    case Message_Type::SET_VELOCITY:
+        callbacks.set_velocity_callback();
+        break;
+    case Message_Type::GET_ODOM:
+        callbacks.get_odom_callback(resp.get_odom_resp());
+        break;
+    case Message_Type::GET_IMU_TEMPERATURE:
+        callbacks.get_imu_temperature_callback(resp.get_imu_temperature_resp());
+        break;
+    case Message_Type::GET_IMU_DATA:
+        callbacks.get_imu_data_callback(resp.get_imu_resp());
+        break;
+    case Message_Type::GET_ULTRASONIC_RANGE:
+        callbacks.get_ultrasonic_range_callback(resp.get_ultrasonic_range_resp());
+        break;
+    case Message_Type::GET_BATTERY_VOLTAGE:
+        callbacks.get_battery_voltage_callback(resp.get_battery_voltage_resp());
+        break;
+    default:
+        break;
+    }
+}
+
+void Controller::base_com_func() {
     Data_Parser parser;
     while (!thread_end) {
         uint8_t data;
-        if (!data_queue.pop(data) || !parser.parse(data))
+        if (!data_queue.pop(data)) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
             continue;
-
-        auto resp = parser.get_response();
-        switch (resp.type()) {
-        case Message_Type::SET_VELOCITY:
-            callbacks.set_velocity_callback();
-            break;
-        case Message_Type::GET_ODOM:
-            callbacks.get_odom_callback(resp.get_odom_resp());
-            break;
-        case Message_Type::GET_IMU_TEMPERATURE:
-            callbacks.get_imu_temperature_callback(resp.get_imu_temperature_resp());
-            break;
-        case Message_Type::GET_IMU_DATA:
-            callbacks.get_imu_data_callback(resp.get_imu_resp());
-            break;
-        case Message_Type::GET_ULTRASONIC_RANGE:
-            callbacks.get_ultrasonic_range_callback(resp.get_ultrasonic_range_resp());
-            break;
-        default:
-            break;
         }
+
+        if (parser.parse(data))
+            process_response(parser.get_response());
     }
 }
+
 
 void Controller::send_request(const Request& req) {
     write(req);

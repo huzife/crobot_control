@@ -18,7 +18,7 @@ private:
     SWSR_Queue<uint8_t> data_queue;
 
     bool thread_end = false;
-    std::thread process_thread;
+    std::thread base_com_thread;
 
 public:
     Controller(Controller_Callbacks& cbs);
@@ -34,7 +34,8 @@ public:
 
     // receive
     void receive_data(uint8_t* data, uint32_t len);
-    void process_data();
+    void process_response(const Response& resp);
+    void base_com_func();
 
     // send
     void send_request(const Request& req);

@@ -7,6 +7,12 @@
 
 namespace crobot_ros {
 
+Controller_CB::Controller_CB(ros::NodeHandle& nh, ros::NodeHandle& nh_private)
+    : nh(nh),
+      nh_private(nh_private) {
+    init();
+}
+
 void Controller_CB::set_velocity_callback() {}
 
 void Controller_CB::get_odom_callback(const crobot::Get_Odom_Resp& resp) {
@@ -61,11 +67,19 @@ void Controller_CB::get_ultrasonic_range_callback(const crobot::Get_Ultrasonic_R
     ultrasonic_range_pub.publish(range);
 }
 
+void Controller_CB::get_battery_voltage_callback(const crobot::Get_Battery_Voltage_Resp& resp) {
+    std_msgs::Float32 voltage;
+    voltage.data = resp.voltage;
+
+    battery_voltage_pub.publish(voltage);
+}
+
 void Controller_CB::init() {
-    odom_pub = nh.advertise<nav_msgs::Odometry>("odom", 10);
-    imu_temperature_pub = nh.advertise<std_msgs::Float32>("imu/temperature", 10);
-    imu_raw_data_pub = nh.advertise<sensor_msgs::Imu>("imu/raw_data", 10);
-    ultrasonic_range_pub = nh.advertise<std_msgs::UInt16>("ultrasonic/range", 10);
+    odom_pub = nh_private.advertise<nav_msgs::Odometry>("odom", 10);
+    imu_temperature_pub = nh_private.advertise<std_msgs::Float32>("imu/temperature", 10);
+    imu_raw_data_pub = nh_private.advertise<sensor_msgs::Imu>("imu/raw_data", 10);
+    ultrasonic_range_pub = nh_private.advertise<std_msgs::UInt16>("ultrasonic/range", 10);
+    battery_voltage_pub = nh_private.advertise<std_msgs::Float32>("battery_voltage", 10);
 }
 
 } // namespace crobot_ros

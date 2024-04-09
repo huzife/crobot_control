@@ -9,15 +9,15 @@ namespace crobot_ros {
 class Controller_CB: public crobot::Controller_Callbacks {
 private:
     ros::NodeHandle nh;
+    ros::NodeHandle nh_private;
     ros::Publisher odom_pub;
     ros::Publisher imu_temperature_pub;
     ros::Publisher imu_raw_data_pub;
     ros::Publisher ultrasonic_range_pub;
+    ros::Publisher battery_voltage_pub;
 
 public:
-    Controller_CB(ros::NodeHandle& nh) : nh(nh) {
-        init();
-    }
+    Controller_CB(ros::NodeHandle& nh, ros::NodeHandle& nh_private);
 
     void set_velocity_callback() override;
 
@@ -28,6 +28,8 @@ public:
     void get_imu_data_callback(const crobot::Get_IMU_Data_Resp& resp) override;
 
     void get_ultrasonic_range_callback(const crobot::Get_Ultrasonic_Range_Resp& resp) override;
+
+    void get_battery_voltage_callback(const crobot::Get_Battery_Voltage_Resp& resp) override;
 
 private:
     void init();
