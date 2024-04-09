@@ -8,13 +8,13 @@ namespace crobot_ros {
 
 class Controller_CB: public crobot::Controller_Callbacks {
 private:
-    ros::NodeHandle nh;
-    ros::NodeHandle nh_private;
-    ros::Publisher odom_pub;
-    ros::Publisher imu_temperature_pub;
-    ros::Publisher imu_raw_data_pub;
-    ros::Publisher ultrasonic_range_pub;
-    ros::Publisher battery_voltage_pub;
+    ros::NodeHandle nh_;
+    ros::NodeHandle nh_private_;
+    ros::Publisher odom_pub_;
+    ros::Publisher imu_temperature_pub_;
+    ros::Publisher imu_raw_data_pub_;
+    ros::Publisher ultrasonic_range_pub_;
+    ros::Publisher battery_voltage_pub_;
 
 public:
     Controller_CB(ros::NodeHandle& nh, ros::NodeHandle& nh_private);

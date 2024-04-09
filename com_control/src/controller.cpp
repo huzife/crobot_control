@@ -5,20 +5,20 @@
 
 namespace crobot {
 Controller::Controller(Controller_Callbacks& cbs)
-    : listener(sp, std::bind(&Controller::receive_data, this,
+    : listener_(sp_, std::bind(&Controller::receive_data, this,
                              std::placeholders::_1,
                              std::placeholders::_2)),
-      callbacks(cbs),
-      data_queue(1024) {}
+      callbacks_(cbs),
+      data_queue_(1024) {}
 
 Controller::~Controller() {
-    if (sp.isOpen()) {
+    if (sp_.isOpen()) {
         std::cout << "close serial" << std::endl;
-        sp.close();
+        sp_.close();
     }
 
-    thread_end = true;
-    base_com_thread.join();
+    thread_end_ = true;
+    base_com_thread_.join();
 }
 
 void Controller::init(const char* port_name,
@@ -27,52 +27,52 @@ void Controller::init(const char* port_name,
                       itas109::DataBits databits,
                       itas109::StopBits stopbits,
                       itas109::FlowControl flow_control) {
-    sp.init(port_name, baudrate, parity, databits, stopbits, flow_control, Listener::READ_BUF_SIZE);
-    sp.setReadIntervalTimeout(0);
+    sp_.init(port_name, baudrate, parity, databits, stopbits, flow_control, Listener::READ_BUF_SIZE);
+    sp_.setReadIntervalTimeout(0);
 }
 
 void Controller::open() {
-    if (sp.open())
-        std::cout << "Serial opened: " << sp.getPortName() << std::endl;
+    if (sp_.open())
+        std::cout << "Serial opened: " << sp_.getPortName() << std::endl;
     else
-        std::cout << "Failed to open serial: " << sp.getLastErrorMsg() << std::endl;
+        std::cout << "Failed to open serial: " << sp_.getLastErrorMsg() << std::endl;
 
     // start read
-    sp.connectReadEvent(&listener);
-    base_com_thread = std::thread{std::bind(&Controller::base_com_func, this)};
+    sp_.connectReadEvent(&listener_);
+    base_com_thread_ = std::thread{std::bind(&Controller::base_com_func, this)};
 }
 
 void Controller::write(const Request& req) {
     auto data = req.data();
-    if (sp.writeData(data.data(), data.size()) == -1)
-        std::cout << "Failed to send data: " << sp.getLastErrorMsg() << std::endl;
+    if (sp_.writeData(data.data(), data.size()) == -1)
+        std::cout << "Failed to send data: " << sp_.getLastErrorMsg() << std::endl;
 }
 
 void Controller::receive_data(uint8_t* data, uint32_t len) {
     for (int i = 0; i < len; ++i) {
-        data_queue.push(data[i]);
+        data_queue_.push(data[i]);
     }
 }
 
 void Controller::process_response(const Response& resp) {
     switch (resp.type()) {
     case Message_Type::SET_VELOCITY:
-        callbacks.set_velocity_callback();
+        callbacks_.set_velocity_callback();
         break;
     case Message_Type::GET_ODOM:
-        callbacks.get_odom_callback(resp.get_odom_resp());
+        callbacks_.get_odom_callback(resp.get_odom_resp());
         break;
     case Message_Type::GET_IMU_TEMPERATURE:
-        callbacks.get_imu_temperature_callback(resp.get_imu_temperature_resp());
+        callbacks_.get_imu_temperature_callback(resp.get_imu_temperature_resp());
         break;
     case Message_Type::GET_IMU_DATA:
-        callbacks.get_imu_data_callback(resp.get_imu_resp());
+        callbacks_.get_imu_data_callback(resp.get_imu_resp());
         break;
     case Message_Type::GET_ULTRASONIC_RANGE:
-        callbacks.get_ultrasonic_range_callback(resp.get_ultrasonic_range_resp());
+        callbacks_.get_ultrasonic_range_callback(resp.get_ultrasonic_range_resp());
         break;
     case Message_Type::GET_BATTERY_VOLTAGE:
-        callbacks.get_battery_voltage_callback(resp.get_battery_voltage_resp());
+        callbacks_.get_battery_voltage_callback(resp.get_battery_voltage_resp());
         break;
     default:
         break;
@@ -81,9 +81,9 @@ void Controller::process_response(const Response& resp) {
 
 void Controller::base_com_func() {
     Data_Parser parser;
-    while (!thread_end) {
+    while (!thread_end_) {
         uint8_t data;
-        if (!data_queue.pop(data)) {
+        if (!data_queue_.pop(data)) {
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
             continue;
         }

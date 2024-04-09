@@ -14,12 +14,12 @@ public:
     static constexpr uint32_t READ_BUF_SIZE = 1024;
 
 private:
-    itas109::CSerialPort& sp;
-    Listener_Read_Callback read_callback;
-    uint8_t read_data[READ_BUF_SIZE];
+    itas109::CSerialPort& sp_;
+    Listener_Read_Callback read_callback_;
+    uint8_t read_data_[READ_BUF_SIZE];
 
 public:
-    Listener(itas109::CSerialPort& sp, Listener_Read_Callback cb): sp(sp), read_callback(cb) {}
+    Listener(itas109::CSerialPort& sp, Listener_Read_Callback cb): sp_(sp), read_callback_(cb) {}
 
     void onReadEvent(const char* port_name, uint32_t read_buf_len) override;
 };

@@ -12,13 +12,13 @@ namespace crobot {
 
 class Controller {
 private:
-    itas109::CSerialPort sp;
-    crobot::Listener listener;
-    Controller_Callbacks& callbacks;
-    SWSR_Queue<uint8_t> data_queue;
+    itas109::CSerialPort sp_;
+    crobot::Listener listener_;
+    Controller_Callbacks& callbacks_;
+    SWSR_Queue<uint8_t> data_queue_;
 
-    bool thread_end = false;
-    std::thread base_com_thread;
+    bool thread_end_ = false;
+    std::thread base_com_thread_;
 
 public:
     Controller(Controller_Callbacks& cbs);

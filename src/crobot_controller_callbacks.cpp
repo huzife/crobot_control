@@ -8,8 +8,8 @@
 namespace crobot_ros {
 
 Controller_CB::Controller_CB(ros::NodeHandle& nh, ros::NodeHandle& nh_private)
-    : nh(nh),
-      nh_private(nh_private) {
+    : nh_(nh),
+      nh_private_(nh_private) {
     init();
 }
 
@@ -35,14 +35,14 @@ void Controller_CB::get_odom_callback(const crobot::Get_Odom_Resp& resp) {
     odom.twist.twist.angular.y = 0.0;
     odom.twist.twist.angular.z = resp.angular_z;
 
-    odom_pub.publish(odom);
+    odom_pub_.publish(odom);
 }
 
 void Controller_CB::get_imu_temperature_callback(const crobot::Get_IMU_Temperature_Resp& resp) {
     std_msgs::Float32 temperature;
     temperature.data = resp.temperature;
 
-    imu_temperature_pub.publish(temperature);
+    imu_temperature_pub_.publish(temperature);
 }
 
 void Controller_CB::get_imu_data_callback(const crobot::Get_IMU_Data_Resp& resp) {
@@ -57,29 +57,29 @@ void Controller_CB::get_imu_data_callback(const crobot::Get_IMU_Data_Resp& resp)
     imu_raw_data.angular_velocity.y = resp.angular_y;
     imu_raw_data.angular_velocity.z = resp.angular_z;
 
-    imu_raw_data_pub.publish(imu_raw_data);
+    imu_raw_data_pub_.publish(imu_raw_data);
 }
 
 void Controller_CB::get_ultrasonic_range_callback(const crobot::Get_Ultrasonic_Range_Resp& resp) {
     std_msgs::UInt16 range;
     range.data = resp.range;
 
-    ultrasonic_range_pub.publish(range);
+    ultrasonic_range_pub_.publish(range);
 }
 
 void Controller_CB::get_battery_voltage_callback(const crobot::Get_Battery_Voltage_Resp& resp) {
     std_msgs::Float32 voltage;
     voltage.data = resp.voltage;
 
-    battery_voltage_pub.publish(voltage);
+    battery_voltage_pub_.publish(voltage);
 }
 
 void Controller_CB::init() {
-    odom_pub = nh_private.advertise<nav_msgs::Odometry>("odom", 10);
-    imu_temperature_pub = nh_private.advertise<std_msgs::Float32>("imu/temperature", 10);
-    imu_raw_data_pub = nh_private.advertise<sensor_msgs::Imu>("imu/raw_data", 10);
-    ultrasonic_range_pub = nh_private.advertise<std_msgs::UInt16>("ultrasonic/range", 10);
-    battery_voltage_pub = nh_private.advertise<std_msgs::Float32>("battery_voltage", 10);
+    odom_pub_ = nh_private_.advertise<nav_msgs::Odometry>("odom", 10);
+    imu_temperature_pub_ = nh_private_.advertise<std_msgs::Float32>("imu/temperature", 10);
+    imu_raw_data_pub_ = nh_private_.advertise<sensor_msgs::Imu>("imu/raw_data", 10);
+    ultrasonic_range_pub_ = nh_private_.advertise<std_msgs::UInt16>("ultrasonic/range", 10);
+    battery_voltage_pub_ = nh_private_.advertise<std_msgs::Float32>("battery_voltage", 10);
 }
 
 } // namespace crobot_ros

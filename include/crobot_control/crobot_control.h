@@ -12,18 +12,18 @@ namespace crobot_ros {
 
 class CRobot_Control {
 private:
-    ros::NodeHandle nh;
-    ros::NodeHandle nh_private;
-    ros::Subscriber cmd_vel_sub;
+    ros::NodeHandle nh_;
+    ros::NodeHandle nh_private_;
+    ros::Subscriber cmd_vel_sub_;
 
-    crobot::Controller controller;
+    crobot::Controller controller_;
 
-    bool thread_end = false;
-    std::thread get_odom_thread;
-    std::thread get_imu_temperature_thread;
-    std::thread get_imu_data_thread;
-    std::thread get_ultrasonic_range_thread;
-    std::thread get_battery_voltage_thread;
+    bool thread_end_ = false;
+    std::thread get_odom_thread_;
+    std::thread get_imu_temperature_thread_;
+    std::thread get_imu_data_thread_;
+    std::thread get_ultrasonic_range_thread_;
+    std::thread get_battery_voltage_thread_;
 
 public:
     CRobot_Control(ros::NodeHandle nh,
