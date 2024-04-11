@@ -27,7 +27,7 @@ private:
     float angular_z_;
 };
 
-class Get_Odom_Req: public Request {
+class Get_Odometry_Req: public Request {
 public:
     std::vector<uint8_t> data() const override;
 };

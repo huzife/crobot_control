@@ -19,7 +19,7 @@ private:
     crobot::Controller controller_;
 
     bool thread_end_ = false;
-    std::thread get_odom_thread_;
+    std::thread get_odometry_thread_;
     std::thread get_imu_temperature_thread_;
     std::thread get_imu_data_thread_;
     std::thread get_ultrasonic_range_thread_;
@@ -36,7 +36,7 @@ public:
 
 private:
     void twist_subscribe_CB(const geometry_msgs::Twist::ConstPtr& msg);
-    void get_odom_func();
+    void get_odometry_func();
     void get_imu_temperature_func();
     void get_imu_data_func();
     void get_ultrasonic_range_func();

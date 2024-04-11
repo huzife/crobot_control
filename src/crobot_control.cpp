@@ -11,7 +11,7 @@ CRobot_Control::CRobot_Control(ros::NodeHandle nh,
 
 CRobot_Control::~CRobot_Control() {
     thread_end_ = true;
-    get_odom_thread_.join();
+    get_odometry_thread_.join();
     get_imu_temperature_thread_.join();
     get_imu_data_thread_.join();
     get_battery_voltage_thread_.join();
@@ -37,8 +37,8 @@ void CRobot_Control::start() {
     init();
     controller_.open();
 
-    get_odom_thread_ =
-        std::thread{std::bind(&CRobot_Control::get_odom_func, this)};
+    get_odometry_thread_ =
+        std::thread{std::bind(&CRobot_Control::get_odometry_func, this)};
     get_imu_temperature_thread_ =
         std::thread{std::bind(&CRobot_Control::get_imu_temperature_func,
                               this)};
@@ -58,11 +58,11 @@ void CRobot_Control::twist_subscribe_CB(
                                  static_cast<float>(msg->angular.z)});
 }
 
-void CRobot_Control::get_odom_func() {
+void CRobot_Control::get_odometry_func() {
     ros::Rate rate(20);
     while (!thread_end_) {
         rate.sleep();
-        controller_.send_request(crobot::Get_Odom_Req{});
+        controller_.send_request(crobot::Get_Odometry_Req{});
     }
 }
 

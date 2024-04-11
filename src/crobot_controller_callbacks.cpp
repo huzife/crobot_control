@@ -15,7 +15,7 @@ Controller_CB::Controller_CB(ros::NodeHandle& nh, ros::NodeHandle& nh_private)
 
 void Controller_CB::set_velocity_callback() {}
 
-void Controller_CB::get_odom_callback(const crobot::Get_Odom_Resp& resp) {
+void Controller_CB::get_odometry_callback(const crobot::Get_Odometry_Resp& resp) {
     nav_msgs::Odometry odom;
     odom.header.stamp = ros::Time::now();
     odom.header.frame_id = "odom";

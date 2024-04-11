@@ -9,7 +9,7 @@ class Controller_Callbacks {
 public:
     virtual void set_velocity_callback() = 0;
 
-    virtual void get_odom_callback(const Get_Odom_Resp& resp) = 0;
+    virtual void get_odometry_callback(const Get_Odometry_Resp& resp) = 0;
 
     virtual void get_imu_temperature_callback(const Get_IMU_Temperature_Resp& resp) = 0;
 

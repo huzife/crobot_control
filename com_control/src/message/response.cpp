@@ -13,8 +13,8 @@ Message_Type Response::type() const {
     return static_cast<Message_Type>(data_[3]);
 }
 
-Get_Odom_Resp Response::get_odom_resp() const {
-    Get_Odom_Resp resp;
+Get_Odometry_Resp Response::get_odometry_resp() const {
+    Get_Odometry_Resp resp;
     resp.linear_x = hex_to_float(data_, 4);
     resp.linear_y = hex_to_float(data_, 8);
     resp.angular_z = hex_to_float(data_, 12);

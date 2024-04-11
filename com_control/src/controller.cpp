@@ -59,8 +59,8 @@ void Controller::process_response(const Response& resp) {
     case Message_Type::SET_VELOCITY:
         callbacks_.set_velocity_callback();
         break;
-    case Message_Type::GET_ODOM:
-        callbacks_.get_odom_callback(resp.get_odom_resp());
+    case Message_Type::GET_ODOMETRY:
+        callbacks_.get_odometry_callback(resp.get_odometry_resp());
         break;
     case Message_Type::GET_IMU_TEMPERATURE:
         callbacks_.get_imu_temperature_callback(resp.get_imu_temperature_resp());
