@@ -2,14 +2,14 @@
 
 namespace crobot_ros {
 
-CRobot_Control::CRobot_Control(ros::NodeHandle nh,
+Crobot_Control::Crobot_Control(ros::NodeHandle nh,
                                ros::NodeHandle nh_private,
                                crobot::Controller_Callbacks& cbs)
     : nh_(nh),
       nh_private_(nh_private),
       controller_(cbs) {}
 
-CRobot_Control::~CRobot_Control() {
+Crobot_Control::~Crobot_Control() {
     thread_end_ = true;
     get_odometry_thread_.join();
     get_imu_temperature_thread_.join();
@@ -17,12 +17,12 @@ CRobot_Control::~CRobot_Control() {
     get_battery_voltage_thread_.join();
 }
 
-void CRobot_Control::init() {
+void Crobot_Control::init() {
     std::string port_name = "/dev/ttyUSB0";
     nh_private_.getParam("port_name", port_name);
 
     cmd_vel_sub_ = nh_.subscribe<geometry_msgs::Twist>(
-        "/cmd_vel", 10, std::bind(&CRobot_Control::twist_subscribe_CB,
+        "/cmd_vel", 10, std::bind(&Crobot_Control::twist_subscribe_CB,
                                   this, std::placeholders::_1));
 
     controller_.init(port_name.c_str(),
@@ -33,24 +33,24 @@ void CRobot_Control::init() {
                     itas109::FlowNone);
 }
 
-void CRobot_Control::start() {
+void Crobot_Control::start() {
     init();
     controller_.open();
 
     get_odometry_thread_ =
-        std::thread{std::bind(&CRobot_Control::get_odometry_func, this)};
+        std::thread{std::bind(&Crobot_Control::get_odometry_func, this)};
     get_imu_temperature_thread_ =
-        std::thread{std::bind(&CRobot_Control::get_imu_temperature_func,
+        std::thread{std::bind(&Crobot_Control::get_imu_temperature_func,
                               this)};
     get_imu_data_thread_ =
-        std::thread{std::bind(&CRobot_Control::get_imu_data_func, this)};
+        std::thread{std::bind(&Crobot_Control::get_imu_data_func, this)};
     get_ultrasonic_range_thread_ =
-        std::thread{std::bind(&CRobot_Control::get_ultrasonic_range_func, this)};
+        std::thread{std::bind(&Crobot_Control::get_ultrasonic_range_func, this)};
     get_battery_voltage_thread_ =
-        std::thread{std::bind(&CRobot_Control::get_battery_voltage_func, this)};
+        std::thread{std::bind(&Crobot_Control::get_battery_voltage_func, this)};
 }
 
-void CRobot_Control::twist_subscribe_CB(
+void Crobot_Control::twist_subscribe_CB(
     const geometry_msgs::Twist::ConstPtr& msg) {
     controller_.send_request(
         crobot::Set_Velocity_Req{static_cast<float>(msg->linear.x),
@@ -58,7 +58,7 @@ void CRobot_Control::twist_subscribe_CB(
                                  static_cast<float>(msg->angular.z)});
 }
 
-void CRobot_Control::get_odometry_func() {
+void Crobot_Control::get_odometry_func() {
     ros::Rate rate(20);
     while (!thread_end_) {
         rate.sleep();
@@ -66,7 +66,7 @@ void CRobot_Control::get_odometry_func() {
     }
 }
 
-void CRobot_Control::get_imu_temperature_func() {
+void Crobot_Control::get_imu_temperature_func() {
     ros::Rate rate(1);
     while (!thread_end_) {
         rate.sleep();
@@ -74,7 +74,7 @@ void CRobot_Control::get_imu_temperature_func() {
     }
 }
 
-void CRobot_Control::get_imu_data_func() {
+void Crobot_Control::get_imu_data_func() {
     ros::Rate rate(100);
     while (!thread_end_) {
         rate.sleep();
@@ -82,7 +82,7 @@ void CRobot_Control::get_imu_data_func() {
     }
 }
 
-void CRobot_Control::get_ultrasonic_range_func() {
+void Crobot_Control::get_ultrasonic_range_func() {
     ros::Rate rate(20);
     while (!thread_end_) {
         rate.sleep();
@@ -90,7 +90,7 @@ void CRobot_Control::get_ultrasonic_range_func() {
     }
 }
 
-void CRobot_Control::get_battery_voltage_func() {
+void Crobot_Control::get_battery_voltage_func() {
     ros::Rate rate(1);
     while (!thread_end_) {
         rate.sleep();

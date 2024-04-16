@@ -6,7 +6,7 @@
 
 namespace crobot_ros {
 
-class Controller_CB: public crobot::Controller_Callbacks {
+class Crobot_Control_Callbacks: public crobot::Controller_Callbacks {
 private:
     ros::NodeHandle nh_;
     ros::NodeHandle nh_private_;
@@ -17,7 +17,7 @@ private:
     ros::Publisher battery_voltage_pub_;
 
 public:
-    Controller_CB(ros::NodeHandle& nh, ros::NodeHandle& nh_private);
+    Crobot_Control_Callbacks(ros::NodeHandle& nh, ros::NodeHandle& nh_private);
 
     void set_velocity_callback() override;
 

@@ -10,7 +10,7 @@
 
 namespace crobot_ros {
 
-class CRobot_Control {
+class Crobot_Control {
 private:
     ros::NodeHandle nh_;
     ros::NodeHandle nh_private_;
@@ -26,10 +26,10 @@ private:
     std::thread get_battery_voltage_thread_;
 
 public:
-    CRobot_Control(ros::NodeHandle nh,
+    Crobot_Control(ros::NodeHandle nh,
                    ros::NodeHandle nh_private,
                    crobot::Controller_Callbacks& cbs);
-    ~CRobot_Control();
+    ~Crobot_Control();
 
     void init();
     void start();
