@@ -1,5 +1,5 @@
-#ifndef COM_CONTROL_SWSR_QUEUE_H
-#define COM_CONTROL_SWSR_QUEUE_H
+#ifndef CROBOT_SWSR_QUEUE_H
+#define CROBOT_SWSR_QUEUE_H
 
 #include <cstddef>
 
@@ -45,4 +45,4 @@ private:
 
 #include "swsr_queue.inl"
 
-#endif // COM_CONTROL_SWSR_QUEUE_H
+#endif // CROBOT_SWSR_QUEUE_H

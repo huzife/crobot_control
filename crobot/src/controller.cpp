@@ -1,6 +1,6 @@
-#include "com_control/controller.h"
-#include "com_control/data_parser.h"
-#include "com_control/message/response.h"
+#include "crobot/controller.h"
+#include "crobot/data_parser.h"
+#include "crobot/message/response.h"
 #include <iostream>
 
 namespace crobot {

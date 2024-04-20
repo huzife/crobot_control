@@ -1,7 +1,7 @@
-#ifndef COM_CONTROL_DATA_PARSER_H
-#define COM_CONTROL_DATA_PARSER_H
+#ifndef CROBOT_DATA_PARSER_H
+#define CROBOT_DATA_PARSER_H
 
-#include "com_control/message/response.h"
+#include "crobot/message/response.h"
 #include <cstdint>
 #include <vector>
 
@@ -32,4 +32,4 @@ private:
 
 } // namespace crobot
 
-#endif // COM_CONTROL_DATA_PARSER_H
+#endif // CROBOT_DATA_PARSER_H

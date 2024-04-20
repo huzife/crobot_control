@@ -2,7 +2,7 @@
 #define CROBOT_CONTROLLER_CALLBACKS_H
 
 #include "ros/ros.h"
-#include "com_control/controller_callbacks.h"
+#include "crobot/controller_callbacks.h"
 
 namespace crobot_ros {
 

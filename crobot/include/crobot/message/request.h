@@ -1,5 +1,5 @@
-#ifndef COM_CONTROL_MESSAGE_REQUEST_H
-#define COM_CONTROL_MESSAGE_REQUEST_H
+#ifndef CROBOT_MESSAGE_REQUEST_H
+#define CROBOT_MESSAGE_REQUEST_H
 
 #include <cstdint>
 #include <vector>
@@ -53,4 +53,4 @@ class Get_Battery_Voltage_Req: public Request {
 
 } // namespace crobot
 
-#endif // COM_CONTROL_MESSAGE_REQUEST_H
+#endif // CROBOT_MESSAGE_REQUEST_H

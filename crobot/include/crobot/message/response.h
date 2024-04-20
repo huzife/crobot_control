@@ -1,5 +1,5 @@
-#ifndef COM_CONTROL_MESSAGE_RESPONSE_H
-#define COM_CONTROL_MESSAGE_RESPONSE_H
+#ifndef CROBOT_MESSAGE_RESPONSE_H
+#define CROBOT_MESSAGE_RESPONSE_H
 
 #include "type.h"
 #include <cstdint>
@@ -54,4 +54,4 @@ public:
 
 } // namespace crobot
 
-#endif // COM_CONTROL_MESSAGE_RESPONSE_H
+#endif // CROBOT_MESSAGE_RESPONSE_H

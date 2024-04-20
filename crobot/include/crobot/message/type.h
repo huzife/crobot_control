@@ -1,5 +1,5 @@
-#ifndef COM_CONTROL_MESSAGE_TYPE_H
-#define COM_CONTROL_MESSAGE_TYPE_H
+#ifndef CROBOT_MESSAGE_TYPE_H
+#define CROBOT_MESSAGE_TYPE_H
 
 enum class Message_Type: unsigned char {
     SET_VELOCITY,
@@ -11,4 +11,4 @@ enum class Message_Type: unsigned char {
     MESSAGE_TYPE_MAX
 };
 
-#endif // COM_CONTROL_MESSAGE_TYPE_H
+#endif // CROBOT_MESSAGE_TYPE_H

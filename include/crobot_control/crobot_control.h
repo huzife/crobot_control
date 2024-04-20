@@ -3,8 +3,8 @@
 
 #include "ros/ros.h"
 #include "geometry_msgs/Twist.h"
-#include "com_control/controller.h"
-#include "com_control/controller_callbacks.h"
+#include "crobot/controller.h"
+#include "crobot/controller_callbacks.h"
 #include <string>
 #include <thread>
 

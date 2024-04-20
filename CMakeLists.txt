@@ -16,7 +16,7 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
 )
 
-add_subdirectory(com_control)
+add_subdirectory(crobot)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -120,11 +120,11 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
   include
-  com_control/include
+  crobot/include
   ${catkin_INCLUDE_DIRS}
 )
 
-link_directories(com_control/lib)
+link_directories(crobot/lib)
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
@@ -163,7 +163,7 @@ add_dependencies(crobot_control ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXP
 # )
 target_link_libraries(crobot_control
   ${catkin_LIBRARIES}
-  com_control
+  crobot
 )
 
 #############

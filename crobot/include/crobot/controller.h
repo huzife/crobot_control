@@ -1,10 +1,10 @@
-#ifndef COM_CONTROL_CONTROLLER_H
-#define COM_CONTROL_CONTROLLER_H
+#ifndef CROBOT_CONTROLLER_H
+#define CROBOT_CONTROLLER_H
 
-#include "com_control/controller_callbacks.h"
-#include "com_control/listener.h"
-#include "com_control/swsr_queue.h"
-#include "com_control/message/request.h"
+#include "crobot/controller_callbacks.h"
+#include "crobot/listener.h"
+#include "crobot/swsr_queue.h"
+#include "crobot/message/request.h"
 #include "CSerialPort/SerialPort.h"
 #include <thread>
 
@@ -46,4 +46,4 @@ private:
 
 } // namespace crobot
 
-#endif // COM_CONTROL_CONTROLLER_H
+#endif // CROBOT_CONTROLLER_H

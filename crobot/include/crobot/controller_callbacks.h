@@ -1,7 +1,7 @@
-#ifndef COM_CONTROL_CONTROLLER_CALLBACK_H
-#define COM_CONTROL_CONTROLLER_CALLBACK_H
+#ifndef CROBOT_CONTROLLER_CALLBACK_H
+#define CROBOT_CONTROLLER_CALLBACK_H
 
-#include "com_control/message/response.h"
+#include "crobot/message/response.h"
 
 namespace crobot {
 
@@ -22,4 +22,4 @@ public:
 
 }
 
-#endif  // COM_CONTROL_CONTROLLER_CALLBACK_H
+#endif  // CROBOT_CONTROLLER_CALLBACK_H
