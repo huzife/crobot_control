@@ -32,7 +32,7 @@ public:
     ~Crobot_Control();
 
     void init();
-    void start();
+    bool start();
 
 private:
     void twist_subscribe_CB(const geometry_msgs::Twist::ConstPtr& msg);

@@ -18,7 +18,7 @@ Crobot_Control::~Crobot_Control() {
 }
 
 void Crobot_Control::init() {
-    std::string port_name = "/dev/ttyUSB0";
+    std::string port_name = "/dev/smart_car";
     nh_private_.getParam("port_name", port_name);
 
     cmd_vel_sub_ = nh_.subscribe<geometry_msgs::Twist>(
@@ -33,9 +33,13 @@ void Crobot_Control::init() {
                     itas109::FlowNone);
 }
 
-void Crobot_Control::start() {
+bool Crobot_Control::start() {
     init();
-    controller_.open();
+
+    if (!controller_.open()) {
+        ROS_ERROR("Failed to start crobot control\n");
+        return false;
+    }
 
     get_odometry_thread_ =
         std::thread{std::bind(&Crobot_Control::get_odometry_func, this)};
@@ -48,6 +52,8 @@ void Crobot_Control::start() {
         std::thread{std::bind(&Crobot_Control::get_ultrasonic_range_func, this)};
     get_battery_voltage_thread_ =
         std::thread{std::bind(&Crobot_Control::get_battery_voltage_func, this)};
+
+    return true;
 }
 
 void Crobot_Control::twist_subscribe_CB(

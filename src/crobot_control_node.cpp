@@ -8,7 +8,10 @@ int main(int argc, char* argv[]) {
     crobot_ros::Crobot_Control_Callbacks callbacks(nh, nh_private);
     crobot_ros::Crobot_Control crobot_control(nh, nh_private, callbacks);
 
-    crobot_control.start();
+    if (!crobot_control.start()) {
+        ros::shutdown();
+        return -1;
+    }
 
     ros::spin();
 
