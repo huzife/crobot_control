@@ -3,6 +3,7 @@
 
 #include "ros/ros.h"
 #include "crobot/controller_callbacks.h"
+#include "tf2_ros/transform_broadcaster.h"
 
 namespace crobot_ros {
 
@@ -15,6 +16,7 @@ private:
     ros::Publisher imu_raw_data_pub_;
     ros::Publisher ultrasonic_range_pub_;
     ros::Publisher battery_voltage_pub_;
+    tf2_ros::TransformBroadcaster odom_base_tb_;
 
 public:
     Crobot_Control_Callbacks(ros::NodeHandle& nh, ros::NodeHandle& nh_private);

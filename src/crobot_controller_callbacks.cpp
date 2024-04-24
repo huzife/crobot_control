@@ -4,7 +4,7 @@
 #include "sensor_msgs/Imu.h"
 #include "nav_msgs/Odometry.h"
 #include "tf2_geometry_msgs/tf2_geometry_msgs.h"
-#include <cmath>
+#include "tf2_ros/transform_broadcaster.h"
 
 namespace crobot_ros {
 
@@ -17,10 +17,13 @@ Crobot_Control_Callbacks::Crobot_Control_Callbacks(ros::NodeHandle& nh, ros::Nod
 void Crobot_Control_Callbacks::set_velocity_callback() {}
 
 void Crobot_Control_Callbacks::get_odometry_callback(const crobot::Get_Odometry_Resp& resp) {
+    ros::Time current_time = ros::Time::now();
+
+    // odom topic
     nav_msgs::Odometry odom;
-    odom.header.stamp = ros::Time::now();
+    odom.header.stamp = current_time;
     odom.header.frame_id = "odom";
-    odom.child_frame_id = "base_link";
+    odom.child_frame_id = "base_footprint";
 
     odom.pose.pose.position.x = resp.position_x;
     odom.pose.pose.position.y = resp.position_y;
@@ -38,6 +41,19 @@ void Crobot_Control_Callbacks::get_odometry_callback(const crobot::Get_Odometry_
     odom.twist.twist.angular.z = resp.angular_z;
 
     odom_pub_.publish(odom);
+
+    // tf
+    geometry_msgs::TransformStamped tfs;
+    tfs.header.stamp = current_time;
+    tfs.header.frame_id = "odom";
+    tfs.child_frame_id = "base_footprint";
+
+    tfs.transform.translation.x = resp.position_x;
+    tfs.transform.translation.y = resp.position_y;
+    tfs.transform.translation.z = 0.0;
+    tfs.transform.rotation = odom.pose.pose.orientation;
+
+    odom_base_tb_.sendTransform(tfs);
 }
 
 void Crobot_Control_Callbacks::get_imu_temperature_callback(const crobot::Get_IMU_Temperature_Resp& resp) {
