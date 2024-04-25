@@ -6,6 +6,8 @@
 #include "tf2_geometry_msgs/tf2_geometry_msgs.h"
 #include "tf2_ros/transform_broadcaster.h"
 
+using namespace crobot;
+
 namespace crobot_ros {
 
 Crobot_Control_Callbacks::Crobot_Control_Callbacks(ros::NodeHandle& nh, ros::NodeHandle& nh_private)
@@ -14,9 +16,12 @@ Crobot_Control_Callbacks::Crobot_Control_Callbacks(ros::NodeHandle& nh, ros::Nod
     init();
 }
 
+void Crobot_Control_Callbacks::set_pid_interval_callback() {}
 void Crobot_Control_Callbacks::set_velocity_callback() {}
+void Crobot_Control_Callbacks::set_count_per_rev_callback() {}
+void Crobot_Control_Callbacks::set_correction_factor_callback() {}
 
-void Crobot_Control_Callbacks::get_odometry_callback(const crobot::Get_Odometry_Resp& resp) {
+void Crobot_Control_Callbacks::get_odometry_callback(const Get_Odometry_Resp& resp) {
     ros::Time current_time = ros::Time::now();
 
     // odom topic
@@ -56,14 +61,16 @@ void Crobot_Control_Callbacks::get_odometry_callback(const crobot::Get_Odometry_
     odom_base_tb_.sendTransform(tfs);
 }
 
-void Crobot_Control_Callbacks::get_imu_temperature_callback(const crobot::Get_IMU_Temperature_Resp& resp) {
+void Crobot_Control_Callbacks::reset_odometry_callback() {}
+
+void Crobot_Control_Callbacks::get_imu_temperature_callback(const Get_IMU_Temperature_Resp& resp) {
     std_msgs::Float32 temperature;
     temperature.data = resp.temperature;
 
     imu_temperature_pub_.publish(temperature);
 }
 
-void Crobot_Control_Callbacks::get_imu_data_callback(const crobot::Get_IMU_Data_Resp& resp) {
+void Crobot_Control_Callbacks::get_imu_data_callback(const Get_IMU_Data_Resp& resp) {
     sensor_msgs::Imu imu_raw_data;
     imu_raw_data.header.stamp = ros::Time::now();
     imu_raw_data.header.frame_id = "imu_link";
@@ -78,14 +85,14 @@ void Crobot_Control_Callbacks::get_imu_data_callback(const crobot::Get_IMU_Data_
     imu_raw_data_pub_.publish(imu_raw_data);
 }
 
-void Crobot_Control_Callbacks::get_ultrasonic_range_callback(const crobot::Get_Ultrasonic_Range_Resp& resp) {
+void Crobot_Control_Callbacks::get_ultrasonic_range_callback(const Get_Ultrasonic_Range_Resp& resp) {
     std_msgs::UInt16 range;
     range.data = resp.range;
 
     ultrasonic_range_pub_.publish(range);
 }
 
-void Crobot_Control_Callbacks::get_battery_voltage_callback(const crobot::Get_Battery_Voltage_Resp& resp) {
+void Crobot_Control_Callbacks::get_battery_voltage_callback(const Get_Battery_Voltage_Resp& resp) {
     std_msgs::Float32 voltage;
     voltage.data = resp.voltage;
 
